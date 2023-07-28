@@ -9,3 +9,7 @@
 
 
 > 출처: SW Expert Academy, https://swexpertacademy.com/main/code/problem/problemList.do
+
+
+### 문제해결전략
+문제의 요구에 충실히 이행하였습니다.
