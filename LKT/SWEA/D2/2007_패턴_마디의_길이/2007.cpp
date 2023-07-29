@@ -42,7 +42,6 @@ int main(int argc, char** argv) {
     fio;
     int T, test_case;
 
-    freopen("input.txt", "r", stdin);
     cin >> T;
     for (test_case = 1; test_case <= T; ++test_case) {
         run();
