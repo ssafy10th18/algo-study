@@ -27,16 +27,11 @@ public class Main_12891 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	
-	// count index를 보기 편하게
-	static final int A = 0;		
-	static final int C = 1;
-	static final int G = 2;
-	static final int T = 3;
-	
 	static int S, P, ans = 0;			// 문자열 길이, 비밀번호 길이, 유효 갯수
-	static char[] string;				// 문자열
-	static int[] count = new int[4];	// 충족 조건
-	static int[] cnt = new int[4];		// 현재 조건
+	static String string;				// 문자열
+	static char[] chars = {'A', 'C', 'G', 'T'};
+	static int[] count = new int[26];	// 충족 조건
+	static int[] cnt = new int[26];		// 현재 조건
 	
 	public static void main(String[] args) throws Exception {
 		// 입력
@@ -54,11 +49,11 @@ public class Main_12891 {
 		S = Integer.parseInt(tmp[0]);	// 문자열 길이
 		P = Integer.parseInt(tmp[1]);	// 비밀번호 길이
 		
-		string = br.readLine().toCharArray();	// 문자열 전체 입력
+		string = "B" + br.readLine();	// 문자열 전체 입력
 		
 		tmp = br.readLine().split(" ");
 		for(int i = 0; i < 4; i++) {
-			count[i] = Integer.parseInt(tmp[i]);	// 충족 조건 입력
+			count[chars[i] - 'A'] = Integer.parseInt(tmp[i]);	// 충족 조건 입력
 		}
 		br.close();
 	}
@@ -71,36 +66,16 @@ public class Main_12891 {
 	 */
 	static void run() throws Exception {
 		// 0~P까지의 부분문자열 체크
-		for(int i = 0; i < P; i++) {
-			if(string[i] == 'A') cnt[A]++;
-			if(string[i] == 'C') cnt[C]++;
-			if(string[i] == 'G') cnt[G]++;
-			if(string[i] == 'T') cnt[T]++;
+		for(int i = 1; i < P; i++) {
+			cnt[string.charAt(i) - 'A']++;
 		}
 		
-		// 충족하면 유효 갯수 ++
-		if(check())
-			ans++;
-		
-		
-		int s = -1;	// 부분 문자열의 맨 앞 index
-		for(int e = P; e < S; e++) {
-			s++;
-			// 맨 앞 글자를 빼주고
-			if(string[s] == 'A') cnt[A]--;
-			else if(string[s] == 'C') cnt[C]--;
-			else if(string[s] == 'G') cnt[G]--;
-			else cnt[T]--;
-			
-			// 맨 뒤에 글자를 추가한다.
-			if(string[e] == 'A') cnt[A]++;
-			else if(string[e] == 'C') cnt[C]++;
-			else if(string[e] == 'G') cnt[G]++;
-			else cnt[T]++;
-			
-			// 조건 충족하면 갯수 ++
-			if(check())
-				ans++;
+		// 부분 문자열의 맨 앞 index
+		int s = 0;
+		for(int e = P; e <= S; e++) {
+			cnt[string.charAt(e) - 'A']++;		// 맨 뒤 하나 붙이고
+			if(check()) ans++;					// 조건 확인
+			cnt[string.charAt(++s) - 'A']--;	// 맨 앞 하나 뺌
 		}
 		
 		bw.write(ans + "");
@@ -115,7 +90,7 @@ public class Main_12891 {
 	 */
 	static boolean check() {
 		for(int i = 0; i < 4; i++) {
-			if(cnt[i] < count[i])		// 최소 갯수보다 현재 갯수가 작으면 false
+			if(cnt[chars[i] - 'A'] < count[chars[i] - 'A'])		// 최소 갯수보다 현재 갯수가 작으면 false
 				return false;
 		}
 		return true;
