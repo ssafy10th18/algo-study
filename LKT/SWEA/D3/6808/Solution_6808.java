@@ -16,7 +16,6 @@ public class Solution_6808 {
     static boolean[] cards = new boolean[MAX];
     static int[] myCards = new int[SIZE];
     static int[] kyu = new int[SIZE];
-    static int[] in = new int[SIZE];
 
     public static void main(String[] args) throws Exception {
         System.setIn(new FileInputStream("input.txt"));
@@ -41,40 +40,49 @@ public class Solution_6808 {
             }
         }
 
-        // idx = 0;
-        // for (int i = 0; i < SIZE; i++) {
-        // in[idx] = myCards[i];
-        // nextPermutation(idx + 1, (1 << i));
-        // }
+        Arrays.sort(myCards);
+        do {
+            getScore();
+        } while (nextPermutation());
         print();
     }
 
     static boolean nextPermutation() {
+        int i = SIZE - 1;
+        while (i > 0 && myCards[i - 1] >= myCards[i])
+            --i;
 
-    }
+        if (i == 0)
+            return false;
 
-    static void nextPermutation(int idx, int used) {
-        if (idx == SIZE) {
-            getScore();
-            return;
+        int j = SIZE - 1;
+        while (myCards[i - 1] >= myCards[j])
+            --j;
+
+        int temp = myCards[i - 1];
+        myCards[i - 1] = myCards[j];
+        myCards[j] = temp;
+
+        int k = SIZE - 1;
+        while (i < k) {
+            temp = myCards[i];
+            myCards[i] = myCards[k];
+            myCards[k] = temp;
+            ++i;
+            --k;
         }
 
-        for (int i = 0; i < SIZE; i++) {
-            if ((used & (1 << i)) == 0) {
-                in[idx] = myCards[i];
-                nextPermutation(idx + 1, used | (1 << i));
-            }
-        }
+        return true;
     }
 
     static void getScore() {
         int Ascore = 0;
         int Bscore = 0;
         for (int i = 0; i < SIZE; i++) {
-            if (in[i] > kyu[i]) {
-                Ascore += in[i] + kyu[i];
+            if (myCards[i] > kyu[i]) {
+                Ascore += myCards[i] + kyu[i];
             } else {
-                Bscore += kyu[i] + in[i];
+                Bscore += kyu[i] + myCards[i];
             }
         }
 
