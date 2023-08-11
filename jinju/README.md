@@ -11,16 +11,25 @@
 - ✅[SWEA 1493번: 수의 새로운 연산 (D3)](https://pearliest.tistory.com/34)
 
 - SWEA 4698번: 테네스의 특별한 소수 (D3)
+
 - SWEA 2005번: 파스칼의 삼각형 (D2)
+
 - ✅[SWEA 2007번: 패턴 마디의 길이 (D2)](https://pearliest.tistory.com/36)
+
 - SWEA 1940번: 가랏! RC카! (D2)
+
 - ✅[SWEA 1220번: Magnetic (D3)](https://pearliest.tistory.com/37)
 
 - SWEA 3499번: 퍼펙트 셔플 (D3)
+
 - ✅[SWEA 4047번: 영준이의 카드 카운팅 (D3)](https://pearliest.tistory.com/38)
+
 - SWEA 4789번: 성공적인 공연 기획 (D3)
+
 - SWEA 5356번: 의석이의 세로로 말해요 (D3)
+
 - ✅[SWEA 5432번: 쇠막대기 자르기 (D4)](https://pearliest.tistory.com/39)
+
 - BOJ 3052번: 나머지 (브론즈2)
 <br></br>
 
@@ -52,4 +61,42 @@
 - ✅[BOJ 2023번: 신기한 소수 (골드5)](https://pearliest.tistory.com/46)
 
 - SWEA 6485번: 삼성시의 버스 노선 (D3)
+
+- BOJ 1156번: 요세푸스 문제 (실버4)
+
+- SWEA 3304번: 최장 공통 부분 수열 (D3)
 <br></br>
+
+## 3주차
+
+- ✅[BOJ 2493번: 탑 (골드5)](https://pearliest.tistory.com/47)
+
+- SWEA 1228번: 암호문1 (D3)
+
+- SWEA 9229번: 한빈이와 Spot Mart (D3)
+
+- SWEA 1233번: 사칙연산 유효성 검사 (D4)
+
+- BOJ 16435번: 스네이크버드 (실버5)
+
+- ✅[BOJ 1168번: 요세푸스 문제2 (플레3)](https://pearliest.tistory.com/48)
+
+- BOJ 2563번: 색종이 (실버5)
+
+- ✅[BOJ 11286번: 절댓값 힙 (실버1)](https://pearliest.tistory.com/50)
+
+- SWEA 1861번: 정사각형 방 (D4)
+
+- ✅[BOJ 16935번: 배열 돌리기 3 (골드5)](https://pearliest.tistory.com/49)
+
+- SWEA 6808번: 규영이와 인영이의 카드게임 (D3)
+
+- BOJ 17406번: 배열 돌리기 4 (골드4)
+
+- BOJ 3040번: 백설 공주와 일곱 난쟁이 (브론즈2)
+
+- BOJ 15686번: 치킨 배달 (골드5)
+
+- BOJ 10163번: 색종이 (브론즈1)
+
+- SWEA 9843번: 촛불 이벤트 (D5)
