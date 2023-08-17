@@ -1,3 +1,5 @@
+package swea.D5.swea9843;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

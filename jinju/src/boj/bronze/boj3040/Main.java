@@ -1,3 +1,5 @@
+package boj.bronze.boj3040;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

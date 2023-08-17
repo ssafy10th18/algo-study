@@ -1,3 +1,5 @@
+package boj.gold.boj16935;
+
 import java.io.*;
 import java.util.StringTokenizer;
 

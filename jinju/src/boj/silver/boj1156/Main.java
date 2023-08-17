@@ -1,3 +1,5 @@
+package boj.silver.boj1156;
+
 import java.io.*;
 import java.util.*;
 

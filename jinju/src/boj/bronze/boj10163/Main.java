@@ -1,3 +1,5 @@
+package boj.bronze.boj10163;
+
 import java.io.*;
 import java.util.StringTokenizer;
 
