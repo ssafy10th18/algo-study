@@ -1,6 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+package boj.silver.boj16435;
+
+import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 

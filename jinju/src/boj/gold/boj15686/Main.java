@@ -1,3 +1,5 @@
+package boj.gold.boj15686;
+
 import java.awt.Point;
 import java.io.*;
 import java.util.*;
