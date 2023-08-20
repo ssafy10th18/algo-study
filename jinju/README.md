@@ -100,3 +100,19 @@
 - BOJ 10163번: 색종이 (브론즈1)
 
 - SWEA 9843번: 촛불 이벤트 (D5)
+<br></br>
+
+## 4주차
+- BOJ 1074번: Z
+
+- ✅[BOJ 1992번: 쿼드트리](https://pearliest.tistory.com/53)
+
+- ✅[BOJ 6987번: 월드컵](https://pearliest.tistory.com/51)
+
+- ✅[BOJ 3109번: 빵집](https://pearliest.tistory.com/52)
+
+- SWEA 1873번: 상호의 배틀필드 (D3)
+
+- SWEA 1247번: 최적 경로 재시도
+
+- BOJ 1987번: 알파벳
