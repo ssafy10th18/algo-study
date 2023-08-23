@@ -1,3 +1,5 @@
+package boj.silver.boj2563;
+
 import java.io.*;
 
 public class Main {

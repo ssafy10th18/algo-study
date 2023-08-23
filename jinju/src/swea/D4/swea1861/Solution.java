@@ -1,3 +1,5 @@
+package swea.D4.swea1861;
+
 import java.awt.Point;
 import java.io.*;
 import java.util.*;

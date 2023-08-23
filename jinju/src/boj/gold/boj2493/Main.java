@@ -1,3 +1,5 @@
+package boj.gold.boj2493;
+
 import java.io.*;
 import java.util.*;
 

@@ -1,3 +1,5 @@
+package boj.platinum.boj1168;
+
 import java.io.*;
 
 public class Main {
