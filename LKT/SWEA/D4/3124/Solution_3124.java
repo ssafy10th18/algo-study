@@ -8,15 +8,15 @@ public class Solution_3124 {
     static StringBuilder sb = new StringBuilder();
 
     static int V, E;
-    static Node[] edgeList;
+    static Edge[] edgeList;
     static int[] parents;
 
-    static class Node {
+    static class Edge {
         int from;
         int to;
         int weight;
 
-        public Node(int from, int to, int weight) {
+        public Edge(int from, int to, int weight) {
             this.from = from;
             this.to = to;
             this.weight = weight;
@@ -47,7 +47,7 @@ public class Solution_3124 {
         E = Integer.parseInt(st.nextToken());
 
         parents = new int[V + 1];
-        edgeList = new Node[E];
+        edgeList = new Edge[E];
 
         for (int i = 0; i < E; i++) {
             st = new StringTokenizer(br.readLine());
@@ -55,7 +55,7 @@ public class Solution_3124 {
             int to = Integer.parseInt(st.nextToken());
             int weight = Integer.parseInt(st.nextToken());
 
-            edgeList[i] = new Node(from, to, weight);
+            edgeList[i] = new Edge(from, to, weight);
         }
 
         Arrays.sort(edgeList, (o1, o2) -> {
@@ -72,7 +72,7 @@ public class Solution_3124 {
         long result = 0;
         int count = 0;
 
-        for (Node edge : edgeList) {
+        for (Edge edge : edgeList) {
             if (union(edge.from, edge.to)) {
                 result += edge.weight;
                 if (++count == V - 1)
