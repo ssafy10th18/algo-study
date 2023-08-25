@@ -3,9 +3,7 @@ import java.util.*;
 
 public class Main_27915 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
 
     static int N;
     static List<Integer>[] list;
@@ -50,9 +48,11 @@ public class Main_27915 {
                 int cur = q.poll();
 
                 if (depth[e] != 0) {
-                    if ((dep - depth[e]) % 2 == 0)
-                        depth[++e] = dep;
-                    else
+                    if ((dep - depth[e]) % 2 == 0) {
+                        while (depth[e] != 0 && (dep - depth[e]) % 2 == 0)
+                            e++;
+                        depth[e] = dep;
+                    } else
                         depth[e] = -1;
 
                 } else
@@ -69,6 +69,8 @@ public class Main_27915 {
                 s++;
             }
         }
-        System.out.println(e);
+
+        while (depth[e] != 0)
+            e++;
     }
 }
