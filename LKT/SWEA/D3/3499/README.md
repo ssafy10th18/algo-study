@@ -1,22 +1,39 @@
 # [SWEA D3] 퍼펙트 셔플 - 3499
 
-### 풀이
-- 입력   
-    카드를 반으로 나눠 deck1과 deck2에 저장
-    ```cpp
-    mid = (N + 1) / 2;              // 홀 수인 경우 중앙 카드를 마지막에 넣어야함
-    for (int i = 0; i < N; i++) {
-        if (i < (N + 1) / 2)        // 0~mid까진 deck1
-            cin >> deck1[i];
-        else                        // mid~끝까진 deck2
-            cin >> deck2[i - mid];
-    }
-    ```
+### 문제
 
-- solve   
-    ```cpp
-    for (int i = 0; i < mid; i++) {
-        ans[2 * i] = deck1[i];      // deck1에서 하나
-        ans[2 * i + 1] = deck2[i];  // deck2에서 하나
-    }
-    ```
+카드를 퍼펙트 셔플 한다는 것은, 카드 덱을 정확히 절반으로 나누고 나눈 것들에서 교대로 카드를 뽑아 새로운 덱을 만드는 것을 의미한다. 
+
+정확한 방식은 다음 그림과 같다.
+
+![image](https://github.com/lkt9899/PS/assets/80976609/2caa62ad-6659-40c1-b894-c91014dda21a)
+
+N개의 카드가 있는 덱이 주어질 때 이를 퍼펙트 셔플하면 어떤 순서가 되는지 출력하는 프로그램을 작성하라.
+
+만약 N이 홀수이면, 교대로 놓을 때 먼저 놓는 쪽에 한 장이 더 들어가게 하면 된다.
+
+### 문제 접근
+
+- 덱을 반으로 나눠 QUEUE에 저장 후 교차로 하나씩 출력
+
+## 풀이
+
+### 입력
+```cpp
+mid = (N + 1) / 2;              // 홀 수인 경우 중앙 카드를 마지막에 넣어야함
+for (int i = 0; i < N; i++) {
+    if (i < (N + 1) / 2)        // 0~mid까진 deck1
+        cin >> deck1[i];
+    else                        // mid~끝까진 deck2
+        cin >> deck2[i - mid];
+}
+```
+
+### 출력
+
+```cpp
+for (int i = 0; i < mid; i++) {
+    ans[2 * i] = deck1[i];      // deck1에서 하나
+    ans[2 * i + 1] = deck2[i];  // deck2에서 하나
+}
+```
