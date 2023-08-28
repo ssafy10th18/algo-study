@@ -31,6 +31,7 @@
 - ✅[SWEA 5432번: 쇠막대기 자르기 (D4)](https://pearliest.tistory.com/39)
 
 - BOJ 3052번: 나머지 (브론즈2)
+
 <br></br>
 
 ## 2주차
@@ -65,6 +66,7 @@
 - BOJ 1156번: 요세푸스 문제 (실버4)
 
 - SWEA 3304번: 최장 공통 부분 수열 (D3)
+
 <br></br>
 
 ## 3주차
@@ -89,30 +91,53 @@
 
 - ✅[BOJ 16935번: 배열 돌리기 3 (골드5)](https://pearliest.tistory.com/49)
 
-- SWEA 6808번: 규영이와 인영이의 카드게임 (D3)
+- ✅[SWEA 6808번: 규영이와 인영이의 카드게임 (D3)](https://pearliest.tistory.com/54)
 
 - BOJ 17406번: 배열 돌리기 4 (골드4)
 
 - BOJ 3040번: 백설 공주와 일곱 난쟁이 (브론즈2)
 
-- BOJ 15686번: 치킨 배달 (골드5)
+- ✅[BOJ 15686번: 치킨 배달 (골드5)](https://pearliest.tistory.com/55)
 
 - BOJ 10163번: 색종이 (브론즈1)
 
-- SWEA 9843번: 촛불 이벤트 (D5)
+- ✅[SWEA 9843번: 촛불 이벤트 (D5)](https://pearliest.tistory.com/56)
+
 <br></br>
 
 ## 4주차
-- BOJ 1074번: Z
+- ✅[BOJ 1074번: Z (실버1)](https://pearliest.tistory.com/57)
 
-- ✅[BOJ 1992번: 쿼드트리](https://pearliest.tistory.com/53)
+- ✅[BOJ 1992번: 쿼드트리 (실버1)](https://pearliest.tistory.com/53)
 
-- ✅[BOJ 6987번: 월드컵](https://pearliest.tistory.com/51)
+- ✅[BOJ 6987번: 월드컵 (골드4)](https://pearliest.tistory.com/51)
 
-- ✅[BOJ 3109번: 빵집](https://pearliest.tistory.com/52)
+- ✅[BOJ 3109번: 빵집 (골드2)](https://pearliest.tistory.com/52)
 
 - SWEA 1873번: 상호의 배틀필드 (D3)
 
 - SWEA 1247번: 최적 경로 재시도
 
-- BOJ 1987번: 알파벳
+- ✅[BOJ 1987번: 알파벳 (골드4)](https://pearliest.tistory.com/58)
+
+<br></br>
+
+## 5주차
+
+- BOJ 10162번: 전자레인지 (브론즈3)
+ 
+- BOJ 17952번: 과제는 끝나지 않아! (실버3)
+
+- BOJ 10026번: 적록색약 (골드5)
+
+- ✅[BOJ 2252번: 줄 세우기 (골드3)](https://pearliest.tistory.com/59)
+
+- ✅[SWEA 3289번: 서로소 집합 (D4)](https://pearliest.tistory.com/60)
+
+- ✅[BOJ 17471번: 게리맨더링 (골드4)](https://pearliest.tistory.com/61)
+
+- ✅[SWEA 1251번: 하나로 (D4)](https://pearliest.tistory.com/62)
+
+- ✅[BOJ 15961번: 회전초밥 (골드4)](https://pearliest.tistory.com/63)
+
+- SWEA1767번: 프로세서 연결하기
