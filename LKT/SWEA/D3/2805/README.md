@@ -1,34 +1,60 @@
 # [SWEA D3] 농작물 수확하기 - 2805
   
-### 풀이
-- 입력   
-    입력에 공백 구분이 없으므로 string으로 받고 한글자씩 int로 변환해서 삽입
-    ```cpp
-    for (int i = 0; i < N; i++) {
-        string s;
-        cin >> s;
-        for (int j = 0; j < N; j++) {
-            map[i][j] = s[j] - '0';
-        }
-    }
-    ```
+### 문제
 
-- 수확   
-    0행, N-1행 => 양 옆 0칸까지
-    1행, N-2행 => 양 옆 1칸까지
-    M행, N-(M+1)행 => 양 옆 M칸까지
-    ```cpp
-    int mid = N / 2;
-    for (int i = 0, j = N - 1; i != mid; i++, j--) {
-        int isum = map[i][mid], jsum = map[j][mid];     // 중앙칸 +
-        for (int k = i; k != 0; k--) {                  // 양 옆으로 k칸씩
-            isum += map[i][mid - k] + map[i][mid + k];
-            jsum += map[j][mid - k] + map[j][mid + k];
-        }
-        ans += isum + jsum;
+N X N크기의 농장이 있다.
+
+이 농장에는 이상한 규칙이 있다.
+
+규칙은 다음과 같다.
+
+```
+① 농장은 크기는 항상 홀수이다. (1 X 1, 3 X 3 … 49 X 49)
+
+② 수확은 항상 농장의 크기에 딱 맞는 정사각형 마름모 형태로만 가능하다.
+```
+
+![image](https://github.com/lkt9899/PS/assets/80976609/d7e0441f-179b-443e-904f-7c96a2752916)
+
+1 X 1크기의 농장에서 자라는 농작물을 수확하여 얻을 수 있는 수익은 3이다.
+
+3 X 3크기의 농장에서 자라는 농작물을 수확하여 얻을 수 있는 수익은 16 (3 + 2 + 5 + 4 + 2)이다.
+
+5 X 5크기의 농장에서 자라는 농작물의 수확하여 얻을 수 있는 수익은 25 (3 + 2 + 1 + 1 + 2 + 5 + 1 + 1 + 3 + 3 + 2 + 1)이다.
+
+농장의 크기 N와 농작물의 가치가 주어질 때, 규칙에 따라 얻을 수 있는 수익은 얼마인지 구하여라.
+
+### 문제 접근
+
+- 마름모 모양은 위, 아래부터 1, 3, 5칸 씩 범위가 늘어남을 이용해 범위 체크
+
+## 풀이
+
+### 입력
+```cpp
+for (int i = 0; i < N; i++) {
+    string s;
+    cin >> s;
+    for (int j = 0; j < N; j++) {
+        map[i][j] = s[j] - '0';
     }
-    
-    for (int i = 0; i < N; i++) {                       // 중앙 행은 전부 합산
-        ans += map[mid][i];
+}
+```
+
+### 수확
+
+```cpp
+int mid = N / 2;
+for (int i = 0, j = N - 1; i != mid; i++, j--) {
+    int isum = map[i][mid], jsum = map[j][mid];     // 중앙칸 +
+    for (int k = i; k != 0; k--) {                  // 양 옆으로 k칸씩
+        isum += map[i][mid - k] + map[i][mid + k];
+        jsum += map[j][mid - k] + map[j][mid + k];
     }
-    ```
+    ans += isum + jsum;
+}
+
+for (int i = 0; i < N; i++) {                       // 중앙 행은 전부 합산
+    ans += map[mid][i];
+}
+```

@@ -42,30 +42,87 @@ i+1번째 줄의 j번째 문자는 i번째 행 j번째 열의 지형 종류를 �
     3. 산
         산은 지나갈 수 없으므로 벽으로 취급
 
-- 각 늑대들의 위치로부터 DFS를 통해 갈 수 있는 모든 초원 방문
-- 이전 늑대가 지나간 곳에 늑대가 있다면 그 늑대는 다시 DFS를 할 필요가 없음
+- 각 늑대들의 위치로부터 BFS를 통해 갈 수 있는 모든 초원 방문
+- 이전 늑대가 지나간 곳에 늑대가 있다면 그 늑대는 다시 BFS를 할 필요가 없음
 ```
 
-### Main
+## 풀이
+
+### run()
 
 ```java
-
+static void run() throws IOException {
+    input();
+    for (int i = 0; i < wolf.size(); i++)
+        if (visited[wolf.get(i).x][wolf.get(i).y] == 0)
+            bfs(wolf.get(i));
+    print();
+}
 ```
 
 ### 입력
 
 ```java
+static void input() throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    StringTokenizer st = new StringTokenizer(br.readLine());
 
+    N = Integer.parseInt(st.nextToken());
+    M = Integer.parseInt(st.nextToken());
+    for (int i = 0; i < N; i++) {
+        map[i] = br.readLine().toCharArray();
+        for (int j = 0; j < M; j++) {
+            // 늑대 좌표 저장
+            if (map[i][j] == 'W')
+                wolf.add(new Axis(i, j));
+            else if (map[i][j] == '.')
+                map[i][j] = 'P';
+        }
+    }
+    br.close();
+}
 ``` 
 
-### run() - 처리 함수
+### 안전지대 판별 (BFS)
 
 ```java
+static void bfs(Axis start) {
+    initVisited();
+    Queue<Axis> q = new ArrayDeque<>();
+    q.add(start);
+    visited[start.x][start.y] = 1;
+    while (!q.isEmpty()) {
+        Axis c = q.poll();
 
-```
+        for (int i = 0; i < 4; i++) {
+            int ni = c.x + di[i];
+            int nj = c.y + dj[i];
 
-### 안전지대 판별 (DFS)
+            if (ni < 0 || ni >= N || nj < 0 || nj >= M || map[ni][nj] == '#')
+                continue;
+            if (map[ni][nj] == '+') {
+                while (map[ni][nj] == '+') {
+                    ni += di[i];
+                    nj += dj[i];
+                }
+                if (map[ni][nj] == '#') {
+                    ni -= di[i];
+                    nj -= dj[i];
+                }
+            }
 
-```java
+            if (visited[ni][nj] == 1)
+                continue;
+            if (map[ni][nj] == 'P')
+                map[ni][nj] = '.';
+            visited[ni][nj] = 1;
+            q.add(new Axis(ni, nj));
+        }
+    }
+}
 
+static void initVisited() {
+    for (int[] a : visited)
+        Arrays.fill(a, 0);
+}
 ```
