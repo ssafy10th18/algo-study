@@ -3,20 +3,16 @@ package swea.Ad.swea1767;
 import java.io.*;
 import java.util.*;
 
-public class Solution {
-	
-	private static int N;
-	private static int answer;
-	private static int maxConnections = 0;
-	
-	private static int[] directions;
-	private static int[][] board;
-	private static boolean[][] visited;
-	
-	private static List<Core> cores;
+public class Solution { //라이브 답안
+
+	private static int N, totalCount;
+	private static int maxCore, minLength;
 	
 	private static int[] dr = {-1, 1, 0, 0};
-	private static int[] dc = {0, 0, 1, -1};
+	private static int[] dc = {0, 0, -1, 1};
+	
+	private static int[][] board;
+	private static List<Core> cores;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,10 +21,12 @@ public class Solution {
 		StringBuilder sb = new StringBuilder();
 		for (int test_case = 1; test_case <= T; test_case++) {
 			N = Integer.parseInt(br.readLine());
-			answer = Integer.MAX_VALUE;
+			
+			totalCount = 0;
+			maxCore = 0;
+			minLength = Integer.MAX_VALUE;
 			
 			board = new int[N][N];
-			visited = new boolean[N][N];
 			cores = new ArrayList<>();
 			
 			StringTokenizer st;
@@ -37,98 +35,114 @@ public class Solution {
 				for(int j = 0; j < N; j++) {
 					board[i][j] = Integer.parseInt(st.nextToken());
 					
-					if(board[i][j] == 1 && !isBorder(i, j)) {
+					if(isBorder(i, j) && board[i][j] == 1) { continue; }
+					
+					if(board[i][j] == 1) {
 						cores.add(new Core(i, j));
+						totalCount++;
 					}
 				}
 			}
 			
-			directions = new int[cores.size()];
+			permutation(0, 0);
 			
-			permutation(0);
-			
-			sb.append("#").append(test_case).append(" ").append(answer).append("\n");
+			sb.append("#").append(test_case).append(" ").append(minLength).append("\n");
 		}
 		
 		System.out.println(sb);
 	}
 
 	private static boolean isBorder(int r, int c) {
-		return (r - 1 < 0 || c - 1 < 0 || r + 1 == N || c + 1 == N);
+		return r == 0 || r == N - 1 || c == 0 || c == N - 1;
 	}
 
-	private static void permutation(int depth) {
-		if(depth == directions.length) {
-			//각 코어가 지금까지 만들어진 방향을 따라 전선을 연결할 수 있는지 확인	
-			checkConnection();
+	/**
+	 * @param depth : 재귀의 깊이
+	 * @param index : 고려해야 할 코어의 번호
+	 * @param coreCount : 지금까지 연결된 코어의 수
+	 */
+	private static void permutation(int depth, int coreCount) {
+		//가지치기: 현재까지 연결된 코어 수 + 남은 코어 수 < 임시 최대 코어 수라면
+		//예: 이미 7개짜리 답을 구해놨는데 6개짜리 답밖에 못 구하는 상황이면 가지치기
+		if(coreCount + (totalCount - depth) < maxCore) {
+			return; 
+		}
+		
+		if(depth == totalCount) {
+			int res = getLength();
+			
+			if(maxCore < coreCount) {
+				maxCore = coreCount;
+				minLength = res;
+			} else if(maxCore == coreCount) {
+				minLength = Math.min(res, minLength);
+			}
 			return;
 		}
 		
 		Core core = cores.get(depth);
-		for(int i = 0; i < 4; i++) {
-			//나아갈 수 없는 방향이라면 아예 뽑지 않는다.
-			int nr = core.row + dr[i];
-			int nc = core.col + dc[i];
+		int r = core.row;
+		int c = core.col;
+		
+		//1.현재 코어를 선택
+		for(int dir = 0; dir < 4; dir++) {
+			if(!isAvailable(r, c, dir)) { continue; }
 			
-			if(!isValid(nr, nc)) {
-				continue;
-			}
+			setStatus(r, c, dir, 2); //전선 놓기
 			
-			directions[depth] = i; 
-			permutation(depth + 1);
+			permutation(depth + 1, coreCount + 1);
+			
+			setStatus(r, c, dir, 0); //전선 지우기
 		}
+		
+		//2.현재 코어를 선택하지 않음
+		permutation(depth + 1, coreCount);
 	}
 
-	private static void checkConnection() {
-		visited = new boolean[N][N];
+	private static int getLength() {
+		int len = 0; //전선을 센다.
 		
-		int connections = 0;
-		int result = 0;
-		for(int i = 0; i < directions.length; i++) {
-			Core core = cores.get(i);
-
-			int nr = 0;
-			int nc = 0;
-			
-			int currLength = 0;
-			boolean isPossible = true;
-			for(int k = 1; k < N; k++) {
-				nr = core.row + dr[directions[i]] * k;
-				nc = core.col + dc[directions[i]] * k;
-				
-				if(!isValid(nr, nc)) {
-					break; //탐색 종료
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < N; j++) {
+				if(board[i][j] == 2) {
+					len++;
 				}
-				
-				//전선이 교차되는 경우 + 다른 프로세서를 지나는 경우
-				if(visited[nr][nc] || board[nr][nc] == 1) {
-					isPossible = false; //이 전선은 합산하지 않는다.
-					break; //탐색 종료
-				}
-				
-				visited[nr][nc] = true;
-				currLength += 1;
-			}
-			
-			//벽에 다다를 수 있다면(전선 교차 X,다른 프로세서 지나지 않음) 합산
-			if(isPossible) {
-				connections++; //연결된 프로세서의 수 증가
-				result += currLength;
 			}
 		}
 		
-		if(result > 0) {
-			if(maxConnections < connections) {
-				maxConnections = connections;
-				answer = result;
-			} else if(maxConnections == connections) {
-				answer = Math.min(result, answer);
+		return len;
+	}
+
+	private static void setStatus(int r, int c, int dir, int status) {
+		int nr = r;
+		int nc = c;
+		
+		while(true) {
+			nr += dr[dir];
+			nc += dc[dir];
+			
+			if(nr < 0 || nc >= N || nc < 0 || nc >= 0) {
+				break;
 			}
+			
+			board[nr][nc] = status;
 		}
 	}
 
-	private static boolean isValid(int r, int c) {
-		return (r > -1 && c > -1 && r < N && c < N);
+	private static boolean isAvailable(int r, int c, int dir) {
+		int nr = r;
+		int nc = c;
+		
+		while(true) {
+			nr += dr[dir];
+			nc += dc[dir];
+			
+			if(nr < 0 || nc >= N || nc < 0 || nc >= 0) { break; }
+			
+			if(board[nr][nc] != 0) { return false; } //다른 코어를 만나거나 전선이 있다면
+		}
+		
+		return true;
 	}
 }
 

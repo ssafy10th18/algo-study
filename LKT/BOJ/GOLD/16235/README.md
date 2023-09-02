@@ -1,5 +1,27 @@
 # [Gold III] 나무 재테크 - 16235 
 
+### 문제
+
+부동산 투자로 억대의 돈을 번 상도는 최근 N×N 크기의 땅을 구매했다. 상도는 손쉬운 땅 관리를 위해 땅을 1×1 크기의 칸으로 나누어 놓았다.
+
+각각의 칸은 (r, c)로 나타내며, r은 가장 위에서부터 떨어진 칸의 개수, c는 가장 왼쪽으로부터 떨어진 칸의 개수이다. r과 c는 1부터 시작한다.
+
+상도는 전자통신공학과 출신답게 땅의 양분을 조사하는 로봇 S2D2를 만들었다. S2D2는 1×1 크기의 칸에 들어있는 양분을 조사해 상도에게 전송하고, 모든 칸에 대해서 조사를 한다. *가장 처음에 양분은 모든 칸에 5만큼 들어있다.*
+
+나무 재테크란 작은 묘목을 구매해 어느정도 키운 후 팔아서 수익을 얻는 재테크이다. 상도는 나무 재테크로 더 큰 돈을 벌기 위해 M개의 나무를 구매해 땅에 심었다. *같은 1×1 크기의 칸에 여러 개의 나무가 심어져 있을 수도 있다.*
+
+이 나무는 사계절을 보내며, 아래와 같은 과정을 반복한다.
+
+봄에는 나무가 자신의 나이만큼 양분을 먹고, 나이가 1 증가한다. 각각의 나무는 나무가 있는 1×1 크기의 칸에 있는 양분만 먹을 수 있다. 하나의 칸에 여러 개의 나무가 있다면, 나이가 어린 나무부터 양분을 먹는다. 만약, 땅에 양분이 부족해 자신의 나이만큼 양분을 먹을 수 없는 나무는 양분을 먹지 못하고 즉시 죽는다.
+
+여름에는 봄에 죽은 나무가 양분으로 변하게 된다. 각각의 죽은 나무마다 나이를 2로 나눈 값이 나무가 있던 칸에 양분으로 추가된다. 소수점 아래는 버린다.
+
+가을에는 나무가 번식한다. 번식하는 나무는 나이가 5의 배수이어야 하며, 인접한 8개의 칸에 나이가 1인 나무가 생긴다. 어떤 칸 (r, c)와 인접한 칸은 (r-1, c-1), (r-1, c), (r-1, c+1), (r, c-1), (r, c+1), (r+1, c-1), (r+1, c), (r+1, c+1) 이다. 상도의 땅을 벗어나는 칸에는 나무가 생기지 않는다.
+
+겨울에는 S2D2가 땅을 돌아다니면서 땅에 양분을 추가한다. 각 칸에 추가되는 양분의 양은 A[r][c]이고, 입력으로 주어진다.
+
+K년이 지난 후 상도의 땅에 살아있는 나무의 개수를 구하는 프로그램을 작성하시오.
+
 ### check point
 - 한 칸에 나무 여러개 => 어린 나무 부터
 - 남은 양분 < 나이 => 나무 죽음
@@ -7,83 +29,93 @@
 - 여름	: 양분 += 봄에 죽은 나무 나이 / 2
 - 가을	: if 나무 나이 % 5 == 0, 주변에 1살 나무 8개 +
 - 겨울	: 양분[r][c] += A[r][c]
-  
-### 풀이
-- 입력   
-한 칸에 나무가 여러 개 자랄 수 있으므로 2차원 벡터로 구현.   
-    ```cpp
-    for (int i = 0; i < M; i++) {
-        int x, y, z;
-        cin >> x >> y >> z;
-        trees[x][y].push_back(z);
-    }
-    ```
 
-- 봄 & 여름   
-봄에 살아남은 나무와 죽은 나무를 판별하고 여름에 계산하면 시간초과 => 둘이 같이 구현
-   ```cpp
-   for (int i = 1; i <= N; i++) {
-        for (int j = 1; j <= N; j++) {
-            if (trees[i][j].size() == 0) continue;          // 칸에 나무가 없으면 스킵
 
-            sort(trees[i][j].begin(), trees[i][j].end());   // 여러개면 어린 나무부터
-            int toAdd = 0;
-            for (int k = 0; k < trees[i][j].size(); k++) {
-                z = trees[i][j][k];                         
-                if (map[i][j] < z) {                        // 나이보다 양분이 적으면 죽은 걸로 처리
-                    toAdd += z / 2;
-                } else {                                    // 살면 alive에 따로 저장
-                    map[i][j] -= z;
-                    z++;
-                    alive.push_back({z, make_pair(i, j)});
-                    if (z % 5 == 0) {                       // 가을에 처리할 나무들 저장
-                        five.push_back({i, j});
-                    }
+### 문제 접근
+- 2차원 벡터를 이용해 나무 정보를 저장
+- 봄 & 여름
+  - 봄에 죽은 나무를 저장 후 여름에 따로 처리 시 최대 시간 복잡도가
+    봄 : O(N^2 * 8^k)
+    여름 : O(8^k)
+    K년 반복 시 최악의 경우 O(K * 8^K)로 시간초과가 발생한다.
+  - 여름을 따로 처리하지 않고 봄에 각 칸을 탐색 시 각 칸 별로 죽은 나무들의 나이를 더해 한 번에 양분을 추가해준다.
+
+## 풀이
+
+### 입력
+
+```cpp
+for (int i = 0; i < M; i++) {
+    int x, y, z;
+    cin >> x >> y >> z;
+    trees[x][y].push_back(z);
+}
+```
+
+### 봄 & 여름
+
+```cpp
+for (int i = 1; i <= N; i++) {
+    for (int j = 1; j <= N; j++) {
+        if (trees[i][j].size() == 0) continue;          // 칸에 나무가 없으면 스킵
+
+        sort(trees[i][j].begin(), trees[i][j].end());   // 여러개면 어린 나무부터
+        int toAdd = 0;
+        for (int k = 0; k < trees[i][j].size(); k++) {
+            z = trees[i][j][k];                         
+            if (map[i][j] < z) {                        // 나이보다 양분이 적으면 죽은 걸로 처리
+                toAdd += z / 2;
+            } else {                                    // 살면 alive에 따로 저장
+                map[i][j] -= z;
+                z++;
+                alive.push_back({z, make_pair(i, j)});
+                if (z % 5 == 0) {                       // 가을에 처리할 나무들 저장
+                    five.push_back({i, j});
                 }
             }
-            trees[i][j].clear();                            // 계산 후 초기화
-            map[i][j] += toAdd;                             // 여름에 추가될 양분 같이 계산
         }
+        trees[i][j].clear();                            // 계산 후 초기화
+        map[i][j] += toAdd;                             // 여름에 추가될 양분 같이 계산
     }
+}
 
-    while (!alive.empty()) {                // 살아남은 나무들 다시 추가
-        x = alive.back().second.first;
-        y = alive.back().second.second;
-        z = alive.back().first;
-        alive.pop_back();
+while (!alive.empty()) {                // 살아남은 나무들 다시 추가
+    x = alive.back().second.first;
+    y = alive.back().second.second;
+    z = alive.back().first;
+    alive.pop_back();
 
-        trees[x][y].push_back(z);
+    trees[x][y].push_back(z);
+}
+```
+
+### 가을  
+
+```cpp
+while (!five.empty()) {
+    x = five.back().first;
+    y = five.back().second;
+    five.pop_back();
+    for (int k = 0; k < 8; k++) {           // 팔방탐색으로 주변에 1살짜리 나무들 추가
+        int nx = x + dx[k];
+        int ny = y + dy[k];
+
+        if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
+        trees[nx][ny].push_back(1);
     }
-   ```
+}
+```
 
-- 가을   
-봄에 따로 저장한 나이가 5의 배수인 나무들을 처리
-    ```cpp
-    while (!five.empty()) {
-        x = five.back().first;
-        y = five.back().second;
-        five.pop_back();
-        for (int k = 0; k < 8; k++) {           // 팔방탐색으로 주변에 1살짜리 나무들 추가
-            int nx = x + dx[k];
-            int ny = y + dy[k];
+### 겨울  
 
-            if (nx < 1 || nx > N || ny < 1 || ny > N) continue;
-            trees[nx][ny].push_back(1);
-        }
+```cpp
+for (int i = 1; i <= N; i++) {
+    for (int j = 1; j <= N; j++) {
+        map[i][j] += A[i][j];
     }
-    ```
-
-- 겨울   
-각 칸마다 할당된 양만큼 양분 추가
-    ```cpp
-    for (int i = 1; i <= N; i++) {
-        for (int j = 1; j <= N; j++) {
-            map[i][j] += A[i][j];
-        }
-    }
-    ```
+}
+```
 
 ### PS.
 - vector 대신 deque 사용시 시간 줄일 수 있음
-- pq로도 가능할 듯 한데 더 오래 걸릴 듯
-- 봄 여름 같이 구현하는게 핵심
+- pq 사용 시 정렬을 삽입 삭제 시마다 하므로 더 느려질 듯
