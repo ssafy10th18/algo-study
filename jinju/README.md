@@ -140,4 +140,24 @@
 
 - ✅[BOJ 15961번: 회전초밥 (골드4)](https://pearliest.tistory.com/63)
 
-- SWEA1767번: 프로세서 연결하기
+- BOJ 1753번: 최단 경로 (골드4)
+
+- ✅[SWEA 1767번: 프로세서 연결하기](https://pearliest.tistory.com/67)
+
+<br></br>
+
+## 6주차
+
+- ✅[BOJ 1010번: 다리 놓기 (실버5)](https://pearliest.tistory.com/64)
+
+- BOJ 1793번: 타일링 (실버2)
+  
+- ✅[BOJ 1600번: 말이 되고픈 원숭이 (골드3)](https://pearliest.tistory.com/65)
+  
+- ✅[BOJ 17070번: 파이프 옮기기 1 (골드5)](https://pearliest.tistory.com/66)
+  
+- ✅[BOJ 13023번: ABCDE (골드5)](https://pearliest.tistory.com/68)
+
+- BOJ 15683번: 감시 (골드4)
+
+- BOJ 2248번: 이진수 찾기 (골드3)
