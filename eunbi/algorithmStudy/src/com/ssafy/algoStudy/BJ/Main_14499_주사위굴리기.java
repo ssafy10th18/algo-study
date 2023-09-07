@@ -3,6 +3,7 @@ package com.ssafy.algoStudy.BJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 /**
@@ -27,7 +28,7 @@ public class Main_14499_주사위굴리기 {
 	static StringTokenizer st;
 	static int N, M, x, y, K;
 	static int[][] map;
-	//바닥, 위, 앞, 왼, 오, 뒤
+	//바닥, 위, 앞, 뒤, 오른, 왼
 	static int dice[] = new int[6];
 	
 	public static void main(String[] args) throws IOException{
@@ -44,6 +45,7 @@ public class Main_14499_주사위굴리기 {
 		 * 이동 때마다 주사위의 뮛 면에 쓰여 있는 수를 출력.
 		 * *바깥으로 이동하는 경우 해당 명령 무시, 출력하면 안됨.
 		 */
+		System.out.println(sb);
 	}
 	
 	static void init() throws IOException{
@@ -73,19 +75,139 @@ public class Main_14499_주사위굴리기 {
 		//동
 		case(1):
 			//굴린 후의 위치가 범위를 벗어나면 return
+			y += 1;
+			if(y >= M) {
+				y--;
+				return;
+			}
 			//아니면 주사위 위치의 숫자들 바꿔줌
-			//이동 위치에 숫자가 0이면 주사위 바닥의 숫자를 지도에 복사 
+			east();
+			//이동 위치에 숫자가 0이면 주사위 바닥의 숫자를 지도에 복사
+			if(map[x][y] == 0) {
+				map[x][y] = dice[0];
+			}
 			//0이 아니면 지도 숫자가 주사위 바닥에 복사, 지도 숫자는 0으로 바뀜
+			else {
+				dice[0] = map[x][y];
+				map[x][y] = 0;
+			}
+			sb.append(dice[1]).append('\n');
 			break;
 		//서
 		case(2):
+			//굴린 후의 위치가 범위를 벗어나면 return
+			y -= 1;
+			if(y < 0) {
+				y++;
+				return;
+			}
+			//아니면 주사위 위치의 숫자들 바꿔줌
+			west();
+			//이동 위치에 숫자가 0이면 주사위 바닥의 숫자를 지도에 복사
+			if(map[x][y] == 0) {
+				map[x][y] = dice[0];
+			}
+			//0이 아니면 지도 숫자가 주사위 바닥에 복사, 지도 숫자는 0으로 바뀜
+			else {
+				dice[0] = map[x][y];
+				map[x][y] = 0;
+			}
+			sb.append(dice[1]).append('\n');
 			break;
 		//북
 		case(3):
+			//굴린 후의 위치가 범위를 벗어나면 return
+			x -= 1;
+			if(x < 0) {
+				x++;
+				return;
+			}
+			//아니면 주사위 위치의 숫자들 바꿔줌
+			north();
+			//이동 위치에 숫자가 0이면 주사위 바닥의 숫자를 지도에 복사
+			if(map[x][y] == 0) {
+				map[x][y] = dice[0];
+			}
+			//0이 아니면 지도 숫자가 주사위 바닥에 복사, 지도 숫자는 0으로 바뀜
+			else {
+				dice[0] = map[x][y];
+				map[x][y] = 0;
+			}
+			sb.append(dice[1]).append('\n');
 			break;
 		//남
 		case(4):
+			//굴린 후의 위치가 범위를 벗어나면 return
+			x += 1;
+			if(x >= N) {
+				x--;
+				return;
+			}
+			//아니면 주사위 위치의 숫자들 바꿔줌
+			south();
+			//이동 위치에 숫자가 0이면 주사위 바닥의 숫자를 지도에 복사
+			if(map[x][y] == 0) {
+				map[x][y] = dice[0];
+			}
+			//0이 아니면 지도 숫자가 주사위 바닥에 복사, 지도 숫자는 0으로 바뀜
+			else {
+				dice[0] = map[x][y];
+				map[x][y] = 0;
+			}
+			sb.append(dice[1]).append('\n');
 			break;
 		}
+	}
+	
+	static void south() {
+		//바닥, 위, 앞, 뒤, 오른, 왼
+		int temp = dice[0];
+		//바닥 <- 앞
+		dice[0] = dice[2];
+		//앞 <- 위
+		dice[2] = dice[1];
+		//위 <- 뒤
+		dice[1] = dice[3];
+		//뒤 <- 바닥
+		dice[3] = temp;
+	}
+	
+	static void north() {
+		//바닥, 위, 앞, 뒤, 오른, 왼
+		int temp = dice[0];
+		//바닥 <- 뒤
+		dice[0] = dice[3];
+		//뒤 <- 위
+		dice[3] = dice[1];
+		//위 <- 앞
+		dice[1] = dice[2];
+		//앞 <- 바닥
+		dice[2] = temp;
+	}
+	
+	static void east() {
+		//바닥, 위, 앞, 뒤, 오른, 왼
+		int temp = dice[0];
+		//바닥 <- 오른
+		dice[0] = dice[4];
+		//오른 <- 위
+		dice[4] = dice[1];
+		//위 <- 왼
+		dice[1] = dice[5];
+		//왼 <- 바닥
+		dice[5] = temp;
+	}
+	
+	static void west() {
+		//바닥, 위, 앞, 뒤, 오른, 왼
+		int temp = dice[0];
+		//바닥 <- 왼
+		dice[0] = dice[5];
+		//왼 <- 위
+		dice[5] = dice[1];
+		//위 <- 오
+		dice[1] = dice[4];
+		//오 <- 바닥
+		dice[4] = temp;
 	}
 }
