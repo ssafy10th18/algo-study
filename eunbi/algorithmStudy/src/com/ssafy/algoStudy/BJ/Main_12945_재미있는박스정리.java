@@ -3,6 +3,7 @@ package com.ssafy.algoStudy.BJ;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * 민호는 N개의 박스 갖고 있다.
@@ -16,7 +17,7 @@ public class Main_12945_재미있는박스정리 {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static int N, pair, result;
 	//idx : boxsize, data : 해당 size 상자의 개수
-	static int[] boxes = new int[100001];
+	static int[] boxes;
 	
 	public static void main(String[] args) throws IOException{
 		/**
@@ -29,68 +30,37 @@ public class Main_12945_재미있는박스정리 {
 		 * [출력]
 		 * 최적의 경우
 		 */
-		result = N - pair*2 + pair;
+		result = N - pair;
 		System.out.println(result);
 	}
 	
 	static void init() throws IOException{
 		N = Integer.parseInt(br.readLine());
+		boxes = new int[N];
 		pair = 0;
 		for(int n = 0; n < N; n++) {
-			int size = Integer.parseInt(br.readLine());
-			boxes[size] += 1;
+			boxes[n] = Integer.parseInt(br.readLine());
 		}
+		//오름차순 정렬
+		Arrays.sort(boxes);
 		
-		search(100000, 50000);
+		search();
 	}
-	
-	static void search(int bigP, int smallP) {
-		if(bigP < 1 || smallP < 1)
-			return;
-		
-		//큰 상자가 존재하면
-		if(boxes[bigP] != 0) {
-			//작은 상자가 존재하면
-			if(boxes[smallP] != 0) {
-				//사이즈 비교
-				//큰 상자 안에 넣을 수 있으면
-				if(compareSize(bigP, smallP)) {
-					//개수 줄여주기
-					boxes[bigP] -= 1;
-					boxes[smallP] -= 1;
-					//쌍 개수 늘려주기
-					pair++;
-					//값 다시 넣어주기
-					search(bigP, smallP);
-					return;
-				}
-				else {
-					search()
-				}
-			}
-			//작은 상자 없으면
-			else {
-				search(bigP, smallP - 1);
-				return;
-			}
-		}
-		//큰 상자 없으면
-		else {
-			//작은 상자 존재하면
-			if(boxes[smallP] != 0) {
-				search(bigP - 1, smallP);
-				return;
-			}
-			//작은 상자 없으면
-			else {
-				search(bigP - 1, smallP - 1);
-				return;
-			}
-		}
-		
-	}
-	
-	static boolean compareSize(int big, int small) {
-		return big >= small*2;
+	//이분탐색
+	static void search() {
+		//작은 상자는 0부터, 큰 상자는 전체의 반부터
+		int small = 0, big = N/2;
+	    //각각의 변수가 전체의 반만 탐색
+		while(small < N/2 && big < N){
+			//현재 탐색 중인 상자가 결합이 가능하면
+	        if(boxes[small] * 2 <= boxes[big]){
+	        	//쌍 개수 늘려주고
+	            pair += 1;
+	            //작은 상자 idx 올려줌
+	            small += 1;
+	        }
+	        //결합이 불가능하면 작은 상자 idx는 냅두고 큰 상자 idx만 올려줌 
+	        big += 1;
+	    }
 	}
 }
