@@ -58,7 +58,16 @@ public class Main {
 			}
 		}
 		
-		
+		//np? 부분집합?
 	}
 
+	private static boolean np(int[] count) {
+		int swapIdx = -1;
+		
+		if(swapIdx == -1) return false;
+		
+		int largerIdx = -1;
+		
+		return true;
+	}
 }
