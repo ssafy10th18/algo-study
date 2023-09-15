@@ -17,7 +17,9 @@
             <a href="https://hover032.tistory.com/45">BJ 14499 - 주사위 굴리기</a>
         </li>
     </ul>
+</details>
 
+<details>
     <summary>2 주차</summary>
     <ul>
         <li>
@@ -30,5 +32,4 @@
             <a href="https://hover032.tistory.com/47">BJ 2109 - 순회강연</a>
         </li>
     </ul>
-
 </details>
