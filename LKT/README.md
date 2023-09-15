@@ -94,3 +94,19 @@
 
 
 </details>
+
+</details>
+<details>
+<summary>week5</summary>
+
+- BOJ
+  - [2591. 숫자카드](/algo-study/LKT/BOJ/GOLD/2591/Main_2591.java)
+  - [1010. 다리 놓기](/algo-study/LKT/BOJ/SILVER/1010/Main_1010.java)
+  - [17070. 파이프 옮기기 1](/algo-study/LKT/BOJ/GOLD/17070/Main_17070.java)
+  - [1600. 말이 되고픈 원숭이](/algo-study/LKT/BOJ/GOLD/1600/Main_1600.java)
+
+- SWEA
+  - 
+
+
+</details>

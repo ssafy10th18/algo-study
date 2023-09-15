@@ -14,12 +14,13 @@ public class Main {
 	private static int N;
 	private static int M;
 	
+
 	private static int count;
 	private static int min = Integer.MAX_VALUE;
 	
 	private static int[][] matrix;
 	private static int[][] scopes;
-	
+
 	private static List<Point> cameras = new ArrayList<>();
 	
 	private static int[] dr = {1, 0, -1, 0};
