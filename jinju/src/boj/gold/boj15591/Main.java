@@ -33,7 +33,7 @@ public class Main {
 			int p = Integer.parseInt(st.nextToken());
 			int q = Integer.parseInt(st.nextToken());
 			int r = Integer.parseInt(st.nextToken());
-
+			
 			graph[p].add(new Node(q, r));
 			graph[q].add(new Node(p, r));
 		}
@@ -50,6 +50,7 @@ public class Main {
 			sb.append(count).append("\n");
 			
 			count = 0;
+
 			visited = new boolean[N + 1];
 		}
 		
