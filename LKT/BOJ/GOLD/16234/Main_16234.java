@@ -5,7 +5,7 @@ public class Main_16234 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
 
-    static int N, L, R, tmp, ans;
+    static int N, L, R, ans;
     static boolean flag;
 
     static int[][] map;
@@ -36,13 +36,11 @@ public class Main_16234 {
     }
 
     static void run() throws Exception {
-        visited = new int[N][N];
-        tmp = 1;
+        visited = new boolean[N][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 if (!visited[i][j]) {
                     bfs(new Axis(i, j));
-                    tmp++;
                 }
             }
         }
