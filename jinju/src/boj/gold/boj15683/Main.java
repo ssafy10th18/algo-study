@@ -8,16 +8,19 @@ import java.util.*;
 
 public class Main {
 
-	private static final char SCOPE = '#';
+	private static final int BLANK = 0;
+	private static final int WALL = 6;
 	
 	private static int N;
 	private static int M;
 	
-	private static int min = Integer.MAX_VALUE;
+
 	private static int count;
+	private static int min = Integer.MAX_VALUE;
 	
-	private static char[][] matrix;
-	private static Map<Integer, int[][]> deltas; 
+	private static int[][] matrix;
+	private static int[][] scopes;
+
 	private static List<Point> cameras = new ArrayList<>();
 	
 	private static int[] dr = {1, 0, -1, 0};
@@ -31,16 +34,23 @@ public class Main {
 		N = Integer.parseInt(temp[0]);
 		M = Integer.parseInt(temp[1]);
 
-		matrix = new char[N][M];
+		matrix = new int[N][M];
+		scopes = new int[N][M];
 		
 		StringTokenizer st;
 		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j < M; j++) {
-				matrix[i][j] = st.nextToken().charAt(0);
+				matrix[i][j] = Integer.parseInt(st.nextToken());
 				
-				if(matrix[i][j] != 0 && matrix[i][j] != 5) {
+				//5번 카메라는 제외하고 add
+				if(matrix[i][j] != BLANK && matrix[i][j] != WALL 
+						&& matrix[i][j] != 5) {
 					cameras.add(new Point(j, i));
+				}
+				
+				if(matrix[i][j] != BLANK) {
+					scopes[i][j] = -1; //사각지대에서 제외시킬 곳 기록
 				}
 			}
 		}
@@ -49,69 +59,81 @@ public class Main {
 			for(int j = 0; j < M; j++) {
 				if(matrix[i][j] == 5) { //회전시킬 필요 없는 카메라는 미리 세팅한다.
 					for(int dir = 0; dir < dr.length; dir++) {
-						setScope(matrix, new Point(j, i), dir, '#');
+						setScope(scopes, new Point(j, i), dir, 1);
 					}
 				}
 			}
 		}
 		
-		count = cameras.size();
+		count = cameras.size(); //5번 카메라를 제외한 카메라의 수
 
-		DFS(matrix, 0);
+		DFS(scopes, 0);
 		
 		System.out.println(min);
 	}
 	
-	private static void DFS(char[][] currMatrix, int depth) {
+	private static void DFS(int[][] scopes, int depth) {
 		if(depth == count) {
 			int result = 0;
 			for(int i = 0; i < N; i++) {
 				for(int j = 0; j < M; j++) {
-					if(currMatrix[i][j] == '0') result += 1;
+					if(scopes[i][j] == BLANK) result += 1;
 				}
 			}
+
 			min = Math.min(result, min);
+			
+			return;
 		}
 		
 		Point curr = cameras.get(depth);
 		int r = curr.y;
 		int c = curr.x;
 		
-		switch(matrix[r][c]) { //카메라 방향 별 탐색
+		switch(matrix[r][c]) { //카메라 방향 별 시야 기록
 			case 1: {
 				for(int dir = 0; dir < dr.length; dir++) {
-					setScope(currMatrix, curr, dir, '#');
-					DFS(currMatrix, depth + 1);
-					setScope(currMatrix, curr, dir, '0'); //원복
+					setScope(scopes, curr, dir, 1);
+					DFS(scopes, depth + 1);
+					setScope(scopes, curr, dir, -1); //원복
 				}
 				break;
 			}
 			case 2: {
 				for(int dir = 0; dir < dr.length / 2; dir++) {
-					setScope(currMatrix, curr, dir, '#');
-					setScope(currMatrix, curr, dir + 2, '#'); //dir과 대칭 방향
-					DFS(currMatrix, depth + 1);
-					setScope(currMatrix, curr, dir, '0'); //원복
-					setScope(currMatrix, curr, dir + 2, '0');
+					setScope(scopes, curr, dir, 1);
+					setScope(scopes, curr, dir + 2, 1); //dir과 대칭 방향
+					DFS(scopes, depth + 1);
+					setScope(scopes, curr, dir, -1); //원복
+					setScope(scopes, curr, dir + 2, -1);
 				}
 				break;
 			}
 			case 3: {
-				//TODO: 
+				for(int i = 0; i < dr.length; i++) {
+					for(int j = i + 1; j < dr.length; j++) { //서로 다른 두 방향 i, j를 탐색 (대칭X)
+						if(i == j || Math.abs(i - j) == 2) { continue; }
+						setScope(scopes, curr, i, 1);
+						setScope(scopes, curr, j, 1); //dir과 대칭 방향
+						DFS(scopes, depth + 1);
+						setScope(scopes, curr, i, -1); //원복
+						setScope(scopes, curr, j, -1);
+					}
+				}
 				break;
 			}
 			case 4: {
 				for(int k = 0; k < dr.length; k++) {
 					for(int dir = 0; dir < dr.length; dir++) {
 						if(k == dir) { continue; } //k번째 방향을 제외한 세 방향 탐색
-						setScope(currMatrix, curr, dir, '#');
+						setScope(scopes, curr, dir, 1);
 					}
 					
-					DFS(currMatrix, depth + 1);
+					DFS(scopes, depth + 1);
 					
 					for(int dir = 0; dir < dr.length; dir++) {
 						if(k == dir) { continue; } //k번째 방향을 제외한 세 방향 탐색
-						setScope(currMatrix, curr, dir, '0'); //원복
+						setScope(scopes, curr, dir, -1); //원복
 					}
 				}
 				break;
@@ -120,7 +142,7 @@ public class Main {
 		
 	}
 	
-	private static void setScope(char[][] matrix, Point start, int dir, char target) {
+	private static void setScope(int[][] scope, Point start, int dir, int target) {
 		int nr = start.y;
 		int nc = start.x;
 		while(true) {
@@ -128,10 +150,10 @@ public class Main {
 			nc += dc[dir];
 			
 			//벽이라면 탐색을 멈춘다.
-			if(!isValid(nr, nc) || matrix[nr][nc] == 6) { return; }
+			if(!isValid(nr, nc) || matrix[nr][nc] == WALL) { return; }
 			
 			//다른 숫자라면 계속 탐색한다. 0인 경우에만 target으로 덮어씌운다.
-			if(matrix[nr][nc] == 0) { matrix[nr][nc] = target; }
+			if(matrix[nr][nc] == BLANK) { scope[nr][nc] += target; }
 		}
 	}
 
