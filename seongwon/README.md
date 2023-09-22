@@ -33,3 +33,18 @@
         </li>
     </ul>
 </details>
+
+<details>
+    <summary>3 주차</summary>
+    <ul>
+        <li>
+            <a href="https://hover032.tistory.com/52">PROGRAMMERS - 입국심사</a>
+        </li>
+        <li>
+            <a href="https://hover032.tistory.com/53">BJ 1717 - 집합의 표현</a>
+        </li>
+        <li>
+            <a href="">BJ 2263 - 트리의 순회</a>
+        </li>
+    </ul>
+</details>
