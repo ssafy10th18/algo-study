@@ -11,6 +11,7 @@ public class Solution_1263 {
 
     static int N;
     static int[][] arr;
+    static long dt, ft1, ft2;
 
     static class Node implements Comparable<Node> {
         int n, c;
@@ -35,14 +36,27 @@ public class Solution_1263 {
             sb.append("#" + test_case + " ");
             run();
         }
+        sb.append("Dijkstra : " + dt + "ms\n")
+                .append("Floid with cond : " + ft1 + "ms\n")
+                .append("Floid no cond : " + ft2 + "ms\n");
         print();
     }
 
     static void run() throws Exception {
         input();
-        // FW();
+        long start, end;
+        start = System.currentTimeMillis();
         DK();
-        // sb.append(getAns() + "\n");
+        end = System.currentTimeMillis();
+        dt += (end - start);
+        start = System.currentTimeMillis();
+        FW();
+        end = System.currentTimeMillis();
+        ft1 += (end - start);
+        start = System.currentTimeMillis();
+        FW2();
+        end = System.currentTimeMillis();
+        ft2 += (end - start);
     }
 
     static void FW() {
@@ -56,6 +70,16 @@ public class Solution_1263 {
                     if (arr[j][k] > arr[j][i] + arr[i][k]) {
                         arr[j][k] = arr[j][i] + arr[i][k];
                     }
+                }
+            }
+        }
+    }
+
+    static void FW2() {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                for (int k = 0; k < N; k++) {
+                    arr[j][k] = Math.min(arr[j][k], arr[j][i] + arr[i][k]);
                 }
             }
         }
@@ -93,9 +117,10 @@ public class Solution_1263 {
                 }
             }
         }
-        
+
         int sum = 0;
-        for(int s : dist) sum += s;
+        for (int s : dist)
+            sum += s;
 
         return sum;
     }
