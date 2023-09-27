@@ -7,13 +7,15 @@ public class Main_9205 {
     static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
     
-    static String ans;
-    static int N;
-    static List<Axis> list;
-    static Axis home, fest;
+    static final String P = "happy\n";
+    static final String NP = "sad\n";
 
-    static int[] di = { 0, 1, 0, -1 };
-    static int[] dj = { 1, 0, -1, 0 };
+    static String ans;
+
+    static int N;
+
+    static Axis[] convs;
+    static Axis home, fest;
 
     static class Axis {
         int x, y;
@@ -32,70 +34,63 @@ public class Main_9205 {
         }
     }
     
-
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException {
         int T = Integer.parseInt(br.readLine());
         for (int test_case = 1; test_case <= T; test_case++) {
-            run();
+            input();
+            sb.append(bfs() ? P : NP);
         }
-        System.out.println(sb);
-    }
-    
-    static void run() throws Exception {
-        input();
-
-        ans = "sad";
-
-        if (home.calc(fest))
-            ans = "happy";
-        else {
-            for (int i = 0; i < list.size(); i++) {
-                Axis conv = list.get(i);
-                if (home.calc(conv)) {
-                    if (bfs(i, conv)) {
-                        ans = "happy";
-                        break;
-                    }
-                }
-            }
-        }
-
-        sb.append(ans + "\n");
+        print();
     }
 
-    static void bfs(int idx, Axis start) {
+    static boolean bfs() {
         Deque<Axis> dq = new ArrayDeque<>();
         boolean[] visited = new boolean[N];
-        visited[i] = true;
-        dq.add(start);
 
+        dq.add(home);
         while (!dq.isEmpty()) {
             Axis cur = dq.poll();
 
-            for () {
-                
+            if (cur.calc(fest)) {
+                return true;
+            }
 
-                
+            for (int next = 0; next < N; next++) {
+                if (cur == convs[next])
+                    continue;
+
+                if (!cur.calc(convs[next]) || visited[next])
+                    continue;
+
+                visited[next] = true;
+                dq.add(convs[next]);
             }
         }
+        
+        return false;
     }
     
-    static void input() throws Exception {
+    static void input() throws IOException {
         N = Integer.parseInt(br.readLine());
-        
-        list = new ArrayList<>();
-        for (int i = 0; i < N + 2; i++) {
-            st = new StringTokenizer(br.readLine());
-            int x = Integer.parseInt(st.nextToken());
-            int y = Integer.parseInt(st.nextToken());
+        convs = new Axis[N];
 
-            if (i == 0) {
-                home = new Axis(x, y);
-            } else if (i == N - 1) {
-                fest = new Axis(x, y);
-            } else {
-                list.add(new Axis(x, y));
-            }
-        }
+        home = getAxis();
+        for (int i = 0; i < N; i++)
+            convs[i] = getAxis();
+        fest = getAxis();
+    }
+
+    static Axis getAxis() throws IOException {
+        st = new StringTokenizer(br.readLine());
+        int x = Integer.parseInt(st.nextToken());
+        int y = Integer.parseInt(st.nextToken());
+        return new Axis(x, y);
+    }
+
+    static void print() throws IOException {
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
+        br.close();
     }
 }
