@@ -4,18 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Main {
 
 	private static int N;
-	private static List<Integer>[] graph;
+	private static int[] graph;
 
-	private static boolean isCycle;
-	
 	private static boolean[] visited;
-	private static boolean[] selected;
-	private static boolean[] finished;
 
 	private static List<Integer> result = new ArrayList<>();
 
@@ -24,39 +21,22 @@ public class Main {
 
 		N = Integer.parseInt(br.readLine());
 
-		graph = new ArrayList[N + 1];
-		selected = new boolean[N + 1];
-		finished = new boolean[N + 1];
-
-		for (int i = 0; i <= N; i++) {
-			graph[i] = new ArrayList<>();
-		}
+		graph = new int[N + 1];
+		visited = new boolean[N + 1];
 
 		int target = 0;
 		for (int i = 1; i <= N; i++) {
 			target = Integer.parseInt(br.readLine());
-			graph[i].add(target); // 주의 : 단방향
+			graph[i] = target; //한 노드에 다른 하나의 노드만 대응 => 배열로 정의 가능
 		}
 
 		for (int u = 1; u <= N; u++) {
-			isCycle = false;
-			visited = new boolean[N + 1];
-			
-			findCycle(u); // u를 시작점으로 하는 사이클을 찾는다.
-			if (!isCycle) { continue; }
-
-			System.out.println("사이클 형성: " + u);
-
-			// 사이클을 형성한다면 결과물에 집계한다.
-			result.add(u);
-			for (int v : graph[u]) {
-				if (!selected[v]) {
-					selected[v] = true;
-					result.add(v);
-				}
-			}
+			visited[u] = true; //시작점
+			findCycle(u, u);
+			visited[u] = false;
 		}
 
+		Collections.sort(result);
 		StringBuilder sb = new StringBuilder();
 		for (int n : result) {
 			sb.append(n).append("\n");
@@ -66,15 +46,14 @@ public class Main {
 		System.out.println(sb.toString());
 	}
 
-	private static void findCycle(int curr) {
-		visited[curr] = true;
-		for (int next : graph[curr]) {
-			if (!visited[next]) {
-				findCycle(next);
-			} else if (!finished[next]) {
-				isCycle = true;
-			}
+	private static void findCycle(int start, int curr) {
+		if(!visited[graph[curr]]) {
+			visited[graph[curr]] = true;
+			findCycle(start, graph[curr]);
+			visited[graph[curr]] = false;
 		}
-		finished[curr] = true; //해당 점을 포함하는 경로 탐색 완료.
+		if(start == graph[curr]) { //시작점으로 다시 되돌아왔다면
+			result.add(start); //사이클 발생 => 결과 리스트에 추가
+		}
 	}
 }
