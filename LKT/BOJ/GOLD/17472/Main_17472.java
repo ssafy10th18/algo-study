@@ -3,16 +3,12 @@ import java.util.*;
 
 public class Main_17472 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
 
-    static final int MAX_I = 7;
-
-    static int N, M;
+    static int N, M, num;
     static int[][] map;
     static int[] parent;
-    static List<Axis>[] islands = new ArrayList[MAX_I];
+    static PriorityQueue<Edge> Edges = new PriorityQueue<>();
 
     static int[] di = { 0, 1, 0, -1 };
     static int[] dj = { 1, 0, -1, 0 };
@@ -48,7 +44,7 @@ public class Main_17472 {
 
     static void run() throws Exception {
         getIslands();
-        getEdges();
+        System.out.println(Kruskal());
     }
 
     static void input() throws Exception {
@@ -66,11 +62,10 @@ public class Main_17472 {
     }
 
     static void getIslands() {
-        int num = 1;
+        num = 1;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
-                if (map[i][j] = 0) {
-                    islands[num] = new ArrayList<>();
+                if (map[i][j] == 0) {
                     bfs(i, j, num);
                     num++;
                 }
@@ -81,12 +76,10 @@ public class Main_17472 {
     static void bfs(int si, int sj, int num) {
         Deque<Axis> dq = new ArrayDeque<>();
         map[si][sj] = num;
-        islands[num].add(new Axis(si, sj));
-
         dq.add(new Axis(si, sj));
         while (!dq.isEmpty()) {
             Axis cur = dq.poll();
-
+            makeEdge(cur);
             for (int d = 0; d < 4; d++) {
                 int ni = cur.x + di[d];
                 int nj = cur.y + dj[d];
@@ -94,22 +87,80 @@ public class Main_17472 {
                 if (isNotValid(ni, nj))
                     continue;
 
+                if (map[ni][nj] != 0)
+                    continue;
+
                 map[ni][nj] = num;
-                if()
                 dq.add(new Axis(ni, nj));
             }
         }
     }
 
+    static void makeEdge(Axis ax) {
+        for (int d = 0; d < 4; d++) {
+            int ni = ax.x + di[d];
+            int nj = ax.y + dj[d];
+
+            if (isNotValid(ni, nj))
+                continue;
+
+            if (map[ni][nj] == -1) {
+                int dist = 0;
+                while (!isNotValid(ni, nj)) {
+                    if (map[ni][nj] != -1) {
+                        if (dist < 2)
+                            break;
+                        int curNum = map[ax.x][ax.y];
+                        int nextNum = map[ni][nj];
+                        if (curNum * nextNum != 0)
+                            Edges.add(new Edge(curNum, nextNum, dist));
+                        break;
+                    }
+                    dist++;
+                    ni += di[d];
+                    nj += dj[d];
+                }
+            }
+        }
+    }
+
+    static int Kruskal() {
+        parent = new int[num];
+        for (int i = 1; i < num; i++)
+            parent[i] = i;
+
+        int cost = 0;
+        int cnt = 0;
+        while (!Edges.isEmpty()) {
+            Edge cur = Edges.poll();
+            if (find(cur.s) != find(cur.e)) {
+                union(cur.s, cur.e);
+                cost += cur.c;
+                cnt++;
+            }
+        }
+        if (cnt != num - 2)
+            return -1;
+        return cost;
+    }
+
+    static int find(int a) {
+        if (parent[a] == a)
+            return a;
+        return parent[a] = find(parent[a]);
+    }
+
+    static void union(int a, int b) {
+        int rootA = find(a);
+        int rootB = find(b);
+
+        if (rootA == rootB)
+            return;
+
+        parent[rootB] = rootA;
+    }
+
     static boolean isNotValid(int i, int j) {
-        return (i < 0 || i >= N || j < 0 || j >= M || map[i][j] != 0);
-    }
-
-    static void getEdges() {
-
-    }
-
-    static void print() throws Exception {
-
+        return (i < 0 || i >= N || j < 0 || j >= M);
     }
 }
