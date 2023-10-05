@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Solution {
@@ -13,62 +13,154 @@ public class Solution {
 	private static int N;
 	private static int W;
 	private static int H;
-	
+	private static int minCount;
+
 	private static int matrix[][];
-	
-	private static List<Point> blocks;
-	
+
+	private static int[] dr = { 0, 1, -1, 0 };
+	private static int[] dc = { 1, 0, 0, -1 };
+
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		int T = Integer.parseInt(br.readLine());
-		
+
 		StringBuilder sb = new StringBuilder();
-		for(int test_case = 1; test_case <= T; test_case++) {
+		for (int test_case = 1; test_case <= T; test_case++) {
 			String[] temp = br.readLine().split(" ");
-			
+
 			N = Integer.parseInt(temp[0]);
 			W = Integer.parseInt(temp[1]);
 			H = Integer.parseInt(temp[2]);
-			
-			matrix = new int[W][H];
-			
+			minCount = Integer.MAX_VALUE;
+
+			matrix = new int[H][W];
+
 			StringTokenizer st;
-			for(int i = 0; i < W; i++) {
+			for (int i = 0; i < H; i++) {
 				st = new StringTokenizer(br.readLine(), " ");
-				for(int j = 0; j < H; j++) {
+				for (int j = 0; j < W; j++) {
 					matrix[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
-			
-			setBlocks();
-			
-			
+
+			DFS(0, matrix);
 		}
-		
+
 		System.out.print(sb);
 	}
-	
-	private static void DFS(int depth) {
-		if(depth == N) {
-			//잔여 블록의 수 카운트
+
+	private static void DFS(int depth, int[][] matrix) {
+		if (depth == N) { // 잔여 블록의 수를 센다.
+			int count = 0;
+			for (int j = 0; j < W; j++) {
+				for (int i = H - 1; i >= 0; i--) {
+					if (matrix[i][j] == 0) {
+						break;
+					}
+
+					count++;
+				}
+			}
+
+			minCount = Math.min(count, minCount);
+
 			return;
 		}
-		
-		//블록 하나 선정해서 깨트리기 
+
+		for (int col = 0; col < W; col++) { // 중복 순열
+			Point block = findUpperBlock(matrix, col); // 블록 선정
+
+			if (block.y > -1 && block.x > -1 && matrix[block.y][block.x] > 0) {
+				int[][] result = new int[H][W];
+
+				breakBlocks(block, matrix, result);
+				resetBlocks(result);
+				DFS(depth + 1, result); // 복제를 만들기 때문에 원복할 필요 X
+			}
+		}
 	}
-	
-	private static void setBlocks() {
-		blocks = new ArrayList<>();
-		
-		all : for(int i = 0; i < W; i++) {
-			for(int j = 0; j < H; j++) {
-				if(matrix[i - 1][j] == 0 && matrix[i + 1][j] != 0) { //경계면이라면
-					blocks.add(new Point(j, i));
-					continue all;
+
+	/*
+	 * 선정된 블록과 그 영향을 받는 블록을 깨트린다.
+	 */
+	private static void breakBlocks(Point block, int[][] matrix, int[][] result) {
+		Queue<Point> queue = new ArrayDeque<>();
+		queue.add(new Point(block.y, block.x));
+
+		for (int i = 0; i < H; i++) {
+			for (int j = 0; j < W; j++) {
+				result[i][j] = matrix[i][j];
+			}
+		}
+
+		int power;
+		while (!queue.isEmpty()) {
+			Point p = queue.poll();
+
+			power = result[p.y][p.x]; // 위력 저장
+			result[p.y][p.x] = 0; // 자기자신을 부순다.
+
+			int nr = p.y;
+			int nc = p.x;
+			for (int dir = 0; dir < dr.length; dir++) {
+				for (int k = 1; k <= power; k++) {
+					nr += dr[dir] * k;
+					nc += dc[dir] * k;
+
+					if (!isValid(nr, nc)) {
+						break;
+					}
+
+					if (result[nr][nc] > 1) { // 위력 1 초과의 다른 블록을 건드렸다면
+						queue.add(new Point(nc, nr)); // 후보에 추가
+					} else
+						result[nr][nc] = 0; // 1짜리 블록이면 그냥 부순다.
+				}
+			}
+		}
+
+		return;
+	}
+
+	/*
+	 * 붕 떠있는 블록을 재배열한다.
+	 */
+	private static void resetBlocks(int[][] matrix) {
+		for (int j = 0; j < W; j++) {
+			// 첫 번째로 비어있는 칸의 row를 찾는다.
+			int blankRow = 0;
+			for (int i = H - 1; i >= 0; i--) {
+				if (matrix[i][j] == 0) {
+					blankRow = i;
+					break;
+				}
+			}
+
+			// 위의 블럭을 모두 아래로 내린다.
+			// 주의: 해당 열에 빈 칸이 하나도 없을 수도 있다.
+			// TODO: 또, 해당 열에서 아무 블럭도 깨지지 않았을 수도 있다.
+			int gap = 0;
+			for (int i = blankRow; i >= 0; i--) {
+				if (matrix[i][j] == 1) { // 위에 떠있는 블럭을 발견했다면
+					matrix[i][j] = 0;
+					matrix[blankRow + gap][j] = 1; // 블럭을 옮긴다.
+					gap++;
 				}
 			}
 		}
 	}
 
+	private static boolean isValid(int nr, int nc) {
+		return (nr > -1 && nc > -1 && nr < H && nc < W);
+	}
+
+	private static Point findUpperBlock(int[][] matrix, int col) {
+		for (int i = H - 1; i >= 0; i--) {
+			if (matrix[i - 1][col] == 0 && matrix[i + 1][col] != 0) { // 경계면이라면
+				return new Point(i, col);
+			}
+		}
+		return new Point(-1, -1); // 블록을 찾을 수 없다면
+	}
 }
