@@ -18,7 +18,18 @@ public class Main_17182 {
 
     static void run() throws Exception {
         input();
+        FW();
         System.out.println(check(K, 0));
+    }
+
+    static void FW() {
+        for (int k = 0; k < N; k++) {
+            for (int s = 0; s < N; s++) {
+                for (int e = 0; e < N; e++) {
+                    cost[s][e] = Math.min(cost[s][e], cost[s][k] + cost[k][e]);
+                }
+            }
+        }
     }
 
     static int check(int idx, int visit) {
