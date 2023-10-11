@@ -41,8 +41,9 @@ public class Solution {
 			}
 
 			int answer = 0;
+			int[] score = {1, 2, 4, 8};
 			for (int i = 0; i < magnets.length; i++) {
-				answer += magnets[i][0];
+				answer += magnets[i][pointers[i]] * score[i];
 			}
 
 			sb.append("#").append(test_case).append(" ").append(answer).append("\n");
