@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+public class 14503번_로봇_청소기 {
 
     static int x;
     static int y;
