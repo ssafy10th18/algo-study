@@ -3,36 +3,34 @@ import java.util.*;
 
 public class Main_2098 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     static StringTokenizer st;
-    static StringBuilder sb = new StringBuilder();
 
     static final int MAX = 1 << 16;
-    static final int INF = 123456789;
+    static final int INF = 987654321;
 
     static int N;
-    static long[][] dp;
-    static long[][] cost;
+    static int[][] dp;
+    static int[][] cost;
 
     public static void main(String[] args) throws Exception {
         input();
-        System.out.println(TSP(0, 0));
+        System.out.println(TSP(0, 1));
     }
 
-    static long TSP(int start, int visit) {
+    static int TSP(int start, int visit) {
         if (visit == (1 << N) - 1) {
             if (cost[start][0] == 0)
-                return dp[start][visit] = INF;
+                return INF;
 
-            return dp[start][visit] = cost[start][0];
+            return cost[start][0];
         }
 
-        if (dp[start][visit] != INF)
+        if (dp[start][visit] != -1)
             return dp[start][visit];
 
         dp[start][visit] = INF;
         for (int i = 0; i < N; i++) {
-            if ((visit & (1 << i)) == 0) {
+            if (cost[start][i] != 0 && (visit & (1 << i)) == 0) {
                 dp[start][visit] = Math.min(dp[start][visit], TSP(i, visit | (1 << i)) + cost[start][i]);
             }
         }
@@ -40,14 +38,14 @@ public class Main_2098 {
         return dp[start][visit];
     }
 
-    static void input() throws Exception {
+    static void input() throws IOException {
         N = Integer.parseInt(br.readLine());
 
-        dp = new long[N][1 << N];
-        for (long[] row : dp)
-            Arrays.fill(row, INF);
+        dp = new int[N][1 << N];
+        for (int[] row : dp)
+            Arrays.fill(row, -1);
 
-        cost = new long[N][N];
+        cost = new int[N][N];
         for (int i = 0; i < N; i++) {
             st = new StringTokenizer(br.readLine());
             for (int j = 0; j < N; j++) {
