@@ -1,6 +1,5 @@
 package swea.Ex.swea5656;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -45,77 +44,76 @@ public class Solution {
 			}
 
 			DFS(0, matrix);
+
+			sb.append("#").append(test_case).append(" ").append(minCount).append("\n");
 		}
 
 		System.out.print(sb);
 	}
 
-	private static void DFS(int depth, int[][] matrix) {
-		if (depth == N) { // 잔여 블록의 수를 센다.
-			int count = 0;
-			for (int j = 0; j < W; j++) {
-				for (int i = H - 1; i >= 0; i--) {
-					if (matrix[i][j] == 0) {
-						break;
-					}
-
-					count++;
-				}
-			}
-
-			minCount = Math.min(count, minCount);
-
-			return;
+	/*
+	 * 구슬 던지기 : 중복 순열 리턴값 => 모든 벽돌이 제거되었는지 여부를 체크
+	 */
+	private static boolean DFS(int depth, int[][] matrix) {
+		int result = getRemain(matrix);
+		if(result == 0) { // 구슬을 던지기 전에 잔여 벽돌 수 체크
+			minCount = 0;
+			return true;
+		}
+		
+		if (depth == N) {
+			// 모든 구슬을 다 던졌다면 잔여 벽돌 수로 최소값을 갱신
+			minCount = Math.min(result, minCount);
+			return false;
 		}
 
-		for (int col = 0; col < W; col++) { // 중복 순열
-			Point block = findUpperBlock(matrix, col); // 블록 선정
+		int[][] newMatrix = new int[H][W];
+		for (int col = 0; col < W; col++) {
+			// 해당 열에 떨어트릴 경우 제거되는 맨 윗 벽돌 찾기
+			int row = 0;
+			while (row < H && matrix[row][col] == 0) ++row;
 
-			if (block.y > -1 && block.x > -1 && matrix[block.y][block.x] > 0) {
-				int[][] result = new int[H][W];
+			// 주의: 별도로 잔여 벽돌 수를 체크해주었기 때문에 다음 깊이를 탐색하지 않아도 됨.
+			// 그렇지 않으면 벽돌이 없는 열도 방문한 후 다음 depth로 넘어가야 한다.
+			// 깰 벽돌이 존재하지 않는다면 해당 열은 모두 빈칸임 => continue;
+			if (row == H) continue;
 
-				breakBlocks(block, matrix, result);
-				resetBlocks(result);
-				DFS(depth + 1, result); // 복제를 만들기 때문에 원복할 필요 X
-			}
+			copyMatrix(matrix, newMatrix);
+
+			// 벽돌이 존재한다면 연쇄적으로 주변 벽돌도 제거
+			breakBlocks(newMatrix, row, col);
+			resetBlocks(newMatrix);
+
+			// 다음 구슬 던지러 가기 : 재귀호출 => 호출 결과가 true라면 종료
+			if(DFS(depth + 1, newMatrix)) return true;
 		}
+		return false;
 	}
 
-	/*
-	 * 선정된 블록과 그 영향을 받는 블록을 깨트린다.
-	 */
-	private static void breakBlocks(Point block, int[][] matrix, int[][] result) {
-		Queue<Point> queue = new ArrayDeque<>();
-		queue.add(new Point(block.y, block.x));
+	// 선정된 블록과 그 영향을 받는 블록을 모두 깨트린다 : Flood Fill (4방 BFS)
+	private static void breakBlocks(int[][] matrix, int row, int col) {
+		Queue<Node> queue = new ArrayDeque<>();
 
-		for (int i = 0; i < H; i++) {
-			for (int j = 0; j < W; j++) {
-				result[i][j] = matrix[i][j];
-			}
-		}
+		if (matrix[row][col] > 1) { queue.add(new Node(row, col, matrix[row][col])); }
+		matrix[row][col] = 0; // 방문 체크
 
-		int power;
 		while (!queue.isEmpty()) {
-			Point p = queue.poll();
-
-			power = result[p.y][p.x]; // 위력 저장
-			result[p.y][p.x] = 0; // 자기자신을 부순다.
-
-			int nr = p.y;
-			int nc = p.x;
-			for (int dir = 0; dir < dr.length; dir++) {
-				for (int k = 1; k <= power; k++) {
-					nr += dr[dir] * k;
-					nc += dc[dir] * k;
-
-					if (!isValid(nr, nc)) {
-						break;
+			Node n = queue.poll();
+			
+			for(int dir = 0; dir < 4; dir++) {
+				int nr = n.row;
+				int nc = n.col;
+				
+				for(int i = 0; i < n.power - 1; i++) {
+					nr += dr[dir];
+					nc += dc[dir];
+					
+					if(!isValid(nr, nc)) { continue; }
+					
+					if(matrix[nr][nc] > 0) {
+						if (matrix[nr][nc] > 1) { queue.add(new Node(nr, nc, matrix[nr][nc])); }
+						matrix[nr][nc] = 0;
 					}
-
-					if (result[nr][nc] > 1) { // 위력 1 초과의 다른 블록을 건드렸다면
-						queue.add(new Point(nc, nr)); // 후보에 추가
-					} else
-						result[nr][nc] = 0; // 1짜리 블록이면 그냥 부순다.
 				}
 			}
 		}
@@ -123,44 +121,62 @@ public class Solution {
 		return;
 	}
 
-	/*
-	 * 붕 떠있는 블록을 재배열한다.
-	 */
+	// 벽돌 내리기 1 : 빈 자리를 찾아서 벽돌 내리기.
+	// 벽돌 내리기 2 : 매 열마다 맨 윗행부터 벽돌을 모두 스택에 넣고, 빈칸으로 만든다. 그 다음 밑바닥부터 벽돌을 채운다.
 	private static void resetBlocks(int[][] matrix) {
-		for (int j = 0; j < W; j++) {
-			// 첫 번째로 비어있는 칸의 row를 찾는다.
-			int blankRow = 0;
-			for (int i = H - 1; i >= 0; i--) {
-				if (matrix[i][j] == 0) {
-					blankRow = i;
-					break;
+		for (int col = 0; col < W; col++) {
+			int row = H - 1; 
+			int nr = -1;
+			
+			while(row > 0) {
+				if(matrix[row][col] == 0) { //빈칸이라면 내릴 벽돌을 찾는다.
+					nr = row - 1;
+					
+					while(nr > 0 && matrix[nr][col] == 0) --nr; //행을 위로 올린다.
+					
+					matrix[row][col] = matrix[nr][col]; //새로 찾은 벽돌을 빈 칸에 넣는다.
+					matrix[nr][col] = 0;
 				}
-			}
-
-			// 위의 블럭을 모두 아래로 내린다.
-			// 주의: 해당 열에 빈 칸이 하나도 없을 수도 있다.
-			// TODO: 또, 해당 열에서 아무 블럭도 깨지지 않았을 수도 있다.
-			int gap = 0;
-			for (int i = blankRow; i >= 0; i--) {
-				if (matrix[i][j] == 1) { // 위에 떠있는 블럭을 발견했다면
-					matrix[i][j] = 0;
-					matrix[blankRow + gap][j] = 1; // 블럭을 옮긴다.
-					gap++;
-				}
+				
+				if(nr == 0) break; //해당 열의 탐색 종료
+				
+				--row; //아직 해당 열을 다 못 봤다면 계속 탐색
 			}
 		}
+	}
+
+	// 배열 복사하기
+	private static void copyMatrix(int[][] matrix, int[][] newMatrix) {
+		for (int i = 0; i < H; i++) {
+			for (int j = 0; j < W; j++) {
+				newMatrix[i][j] = matrix[i][j];
+			}
+		}
+	}
+
+	// 남은 벽돌 개수 구하기 : 매번 구슬 던지기 전에 사용할 메소드
+	private static int getRemain(int[][] matrix) {
+		int count = 0;
+		for (int i = 0; i < H; i++) {
+			for (int j = 0; j < W; j++) {
+				if (matrix[i][j] != 0)
+					count++;
+			}
+		}
+		return count;
 	}
 
 	private static boolean isValid(int nr, int nc) {
 		return (nr > -1 && nc > -1 && nr < H && nc < W);
 	}
+}
 
-	private static Point findUpperBlock(int[][] matrix, int col) {
-		for (int i = H - 1; i >= 0; i--) {
-			if (matrix[i - 1][col] == 0 && matrix[i + 1][col] != 0) { // 경계면이라면
-				return new Point(i, col);
-			}
-		}
-		return new Point(-1, -1); // 블록을 찾을 수 없다면
+class Node {
+	int row, col, power;
+
+	public Node(int row, int col, int count) {
+		this.row = row;
+		this.col = col;
+		this.power = count;
 	}
 }
