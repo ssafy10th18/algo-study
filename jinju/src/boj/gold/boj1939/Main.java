@@ -10,8 +10,8 @@ import java.util.PriorityQueue;
 public class Main {
 
 	private static List<Node>[] graph;
-	private static boolean[] visited;
-
+	private static int[] maxWeight;
+	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -21,10 +21,11 @@ public class Main {
 		int M = Integer.parseInt(temp[1]); // 다리의 개수
 
 		graph = new LinkedList[N + 1];
-		visited = new boolean[N + 1];
+		maxWeight = new int[N + 1]; //dist 배열
 
 		for (int i = 1; i <= N; i++) {
 			graph[i] = new LinkedList<>();
+			maxWeight[i] = -1;
 		}
 
 		for (int i = 1; i <= M; i++) {
@@ -50,31 +51,29 @@ public class Main {
 	private static int dijkstra(int start, int end) {
 		PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o2.weight, o1.weight)); // 가중치 큰 간선 우선
 
-		pq.add(new Node(start, Integer.MAX_VALUE));
-		visited[start] = true;
-
-		int maxWeight = 0; // Node에 기록된 '최소' 중량 중 최대인 것을 찾는다.
+		maxWeight[start] = Integer.MAX_VALUE;
+		pq.add(new Node(start, maxWeight[start]));
+		
+		// Node에 기록된 '최소' 중량 중 최대인 것을 찾는다.
 		while (!pq.isEmpty()) {
 			Node n = pq.poll();
 
-			if (n.num == end) { // 도착지점에 다다르면
-				maxWeight = Math.max(n.weight, maxWeight);
+			// 현재까지 구해진 최대값보다 작으면,
+			// 즉 n까지 도달하는 데 소모되는 weight가 유망하지 않으면 가지치기
+			if(n.weight < maxWeight[n.num]) {
 				continue;
 			}
 
 			for (Node next : graph[n.num]) {
-				if (visited[next.num]) {
-					continue;
-				}
-
-				visited[next.num] = true;
-				if (next.weight >= maxWeight) { // 현재까지의 최대 하중보다 작으면 가지치기
-					pq.add(new Node(next.num, Math.min(next.weight, n.weight)));
+				int currWeight = Math.min(next.weight, n.weight); //이 경로의 최소하중
+				if (currWeight > maxWeight[next.num]) { //더 큰 것으로 교체될 수 있다면 add
+					maxWeight[next.num] = currWeight;
+					pq.add(new Node(next.num, maxWeight[next.num]));
 				}
 			}
 		}
 
-		return maxWeight;
+		return maxWeight[end];
 	}
 
 }
