@@ -158,7 +158,7 @@
   
 - ✅[BOJ 13023번: ABCDE (골드5)](https://pearliest.tistory.com/68)
 
-- BOJ 15683번: 감시 (골드4)
+- ✅[BOJ 15683번: 감시 (골드4)](https://pearliest.tistory.com/69)
 
 - BOJ 2248번: 이진수 찾기 (골드3)
 
@@ -166,19 +166,19 @@
 
 ## 7주차
 
-- BOJ 16401번: 과자 나눠주기 (실버2)
+- ✅[BOJ 16401번: 과자 나눠주기 (실버2)](https://pearliest.tistory.com/70)
 
-- BOJ 2613번: 숫자구슬 (골드2)
+- ✅[BOJ 2613번: 숫자구슬 (골드2)](https://pearliest.tistory.com/71)
 
-- BOJ 14499번: 주사위 굴리기 (골드4)
+- ✅[BOJ 14499번: 주사위 굴리기 (골드4)](https://pearliest.tistory.com/72)
 
-- BOJ 11591번: Mootube (Silver) (골드5)
+- ✅[BOJ 11591번: Mootube (Silver) (골드5)](https://pearliest.tistory.com/73)
 
 <br></br>
 
 ## 8주차
 
-- BOJ 1062번: 가르침 (골드4)
+- ✅[BOJ 1062번: 가르침 (골드4)](https://pearliest.tistory.com/74)
 
 - BOJ 2022번: 사다리 (골드4)
 
@@ -190,9 +190,9 @@
 
 ## 9주차 
 
-- 프로그래머스: 입국심사 (Lv.3)
+- ✅[프로그래머스: 입국심사 (Lv.3)](https://pearliest.tistory.com/77)
 
-- BOJ 1717번: 집합의 표현 (골드5)
+- ✅[BOJ 1717번: 집합의 표현 (골드5)](https://pearliest.tistory.com/78)
 
 - BOJ 2263번: 트리의 순회 (골드1)
 
@@ -202,18 +202,60 @@
 
 ## 10주차
 
-- BOJ 14502번: 연구소 (골드4)
+- ✅[BOJ 14502번: 연구소 (골드4)](https://pearliest.tistory.com/79)
 
-- BOJ 2668번: 숫자고르기 (골드5)
+- ✅[BOJ 2668번: 숫자고르기 (골드5)](https://pearliest.tistory.com/80)
 
 - BOJ 14002번: 가장 긴 증가하는 부분 수열 4 (골드4)
 
-- BOJ 1194번: 달이 차오른다, 가자 (골드1)
+- ✅[BOJ 1194번: 달이 차오른다, 가자 (골드1)](https://pearliest.tistory.com/81)
 
 - SWEA 3307번: 최장 증가 부분 수열 (D3)
 
-- BOJ 9205번: 맥주 마시면서 걸어가기 (골드5)
+- ✅[BOJ 9205번: 맥주 마시면서 걸어가기 (골드5)](https://pearliest.tistory.com/82)
 
 - SWEA 1263번: 사람 네트워크2 (D6)
 
-- BOJ 3055번: 탈출 (골드4)
+- ✅[BOJ 3055번: 탈출 (골드4)](https://pearliest.tistory.com/83)
+
+<br></br>
+
+## 11주차
+
+- ✅[BOJ 1786번: 찾기 (플레5)](https://pearliest.tistory.com/84)
+
+- BOJ 17472번: 다리 만들기 2 (골드1)
+
+- ✅[SWEA 5643번: \[Professional\] 키순서 (D4)](https://pearliest.tistory.com/86)
+
+- ✅[BOJ 4485번: 녹색 옷 입은 애가 젤다지? (골드4)](https://pearliest.tistory.com/87)
+
+- ✅[SWEA 5658번: [모의 SW 역량테스트] 보물상자 비밀번호](https://pearliest.tistory.com/88)
+
+- SWEA 5656번: [모의 SW 역량테스트] 벽돌 깨기
+
+<br></br>
+
+## 12주차
+
+- BOJ 17144번: 미세먼지 안녕! (골드4)
+
+- SWEA 4013번: [모의 SW 역량테스트] 특이한 자석
+
+- BOJ 17182번: 우주 탐사선 (골드3)
+
+- SWEA 14510번: 나무 높이 (D2)
+
+- ✅[BOJ 2042번 : 구간 합 구하기 (골드1)](https://pearliest.tistory.com/89)
+
+- SWEA 5604번: \[Professional\] 구간 합 (D4)
+
+- BOJ 24230번: 트리 색칠하기 (골드5)
+
+- BOJ 1019번: 책 페이지 (골드1)
+
+- BOJ 1939번: 중량제한 (골드3)
+
+- BOJ 2473번: 세 용액 (골드3)
+
+<br></br>
