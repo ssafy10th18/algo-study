@@ -232,30 +232,30 @@
 
 - ✅[SWEA 5658번: [모의 SW 역량테스트] 보물상자 비밀번호](https://pearliest.tistory.com/88)
 
-- SWEA 5656번: [모의 SW 역량테스트] 벽돌 깨기
+- ✅[SWEA 5656번: [모의 SW 역량테스트] 벽돌 깨기](https://pearliest.tistory.com/90)
 
 <br></br>
 
 ## 12주차
 
-- BOJ 17144번: 미세먼지 안녕! (골드4)
+- ✅[BOJ 2042번 : 구간 합 구하기 (골드1)](https://pearliest.tistory.com/89)
+
+- ✅[BOJ 17144번: 미세먼지 안녕! (골드4)](https://pearliest.tistory.com/91)
 
 - SWEA 4013번: [모의 SW 역량테스트] 특이한 자석
 
-- BOJ 17182번: 우주 탐사선 (골드3)
+- ✅[BOJ 17182번: 우주 탐사선 (골드3)](https://pearliest.tistory.com/92)
 
-- SWEA 14510번: 나무 높이 (D2)
-
-- ✅[BOJ 2042번 : 구간 합 구하기 (골드1)](https://pearliest.tistory.com/89)
+- ✅[SWEA 14510번: 나무 높이 (D2)](https://pearliest.tistory.com/93)
 
 - SWEA 5604번: \[Professional\] 구간 합 (D4)
 
-- BOJ 24230번: 트리 색칠하기 (골드5)
+- ✅[BOJ 24230번: 트리 색칠하기 (골드5)](https://pearliest.tistory.com/95)
 
-- BOJ 1019번: 책 페이지 (골드1)
+- ✅[BOJ 1019번: 책 페이지 (골드1)](https://pearliest.tistory.com/96)
 
-- BOJ 1939번: 중량제한 (골드3)
+- ✅[BOJ 1939번: 중량제한 (골드3)](https://pearliest.tistory.com/97)
 
-- BOJ 2473번: 세 용액 (골드3)
+- ✅[BOJ 2473번: 세 용액 (골드3)](https://pearliest.tistory.com/98)
 
 <br></br>
