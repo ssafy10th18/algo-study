@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-	//private static final int INF = 9_999_999;
-	
 	private static boolean[][] D;
 	
 	public static void main(String[] args) throws IOException {
