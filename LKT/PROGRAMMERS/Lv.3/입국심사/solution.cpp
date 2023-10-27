@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 using namespace std;
@@ -42,4 +43,9 @@ long long solution(int n, vector<int> times) {
     find(start, end);
 
     return answer;
+}
+
+int main() {
+    vector<int> times = {7, 10};
+    cout << solution(6, times);
 }
