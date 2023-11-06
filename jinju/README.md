@@ -259,3 +259,25 @@
 - ✅[BOJ 2473번: 세 용액 (골드3)](https://pearliest.tistory.com/98)
 
 <br></br>
+
+## 13주차
+
+- BOJ 1766번: 문제집 (골드2)
+  
+- BOJ 12100번: 2048 (Easy) (골드2)
+  
+- BOJ 1918번: 후위 표기식 (골드2)
+
+<br></br>
+
+## 14주차
+
+![image](https://d2u3dcdbebyaiu.cloudfront.net/uploads/atch_img/276/51ab60cf73bf2049aa6d3c56083eeb82_res.jpeg)
+
+- BOJ 2109번: 순회강연 (골드3)
+  
+- BOJ 1941번: 소문난 칠공주 (골드3)
+  
+- BOJ 14945번: 불장난 (골드4)
+
+<br></br>
