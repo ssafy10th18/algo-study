@@ -4,9 +4,10 @@ import java.util.*;
 public class Main_2812 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static StringTokenizer st;
+    static StringBuilder sb = new StringBuilder();
 
     static int N, K;
-    static int[] num;
+    static char[] num;
 
     public static void main(String[] args) throws Exception {
         input();
@@ -14,24 +15,25 @@ public class Main_2812 {
     }
 
     static void run() throws Exception {
-        int max = -1;
+        Deque<Character> dq = new ArrayDeque<>();
         for (int i = 0; i < N; i++) {
-
+            while (!dq.isEmpty() && K > 0 && dq.peekLast() < num[i]) {
+                dq.pollLast();
+                K--;
+            }
+            dq.add(num[i]);
         }
+
+        for (char c : dq)
+            sb.append(c);
+        System.out.println(sb.toString()
+                .substring(0, sb.length() - K));
     }
 
     static void input() throws Exception {
         st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-
-        num = new int[N];
-        char[] tmp = br.readLine().toCharArray();
-        for (int i = 0; i < N; i++)
-            num[i] = tmp[i] - '0';
-    }
-
-    static void print() throws Exception {
-
+        num = br.readLine().toCharArray();
     }
 }
