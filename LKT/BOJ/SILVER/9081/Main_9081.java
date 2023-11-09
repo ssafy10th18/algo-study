@@ -3,8 +3,6 @@ import java.util.*;
 
 public class Main_9081 {
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-    static StringTokenizer st;
     static StringBuilder sb = new StringBuilder();
 
     static int N;
@@ -12,7 +10,7 @@ public class Main_9081 {
     public static void main(String[] args) throws Exception {
         input();
         run();
-        System.out.println(sb);
+        System.out.print(sb);
     }
 
     static void run() throws Exception {
@@ -50,15 +48,10 @@ public class Main_9081 {
             k--;
         }
 
-        sb.append(String.valueOf(s) + "\n");   
+        sb.append(String.valueOf(s) + "\n");
     }
 
     static void input() throws Exception {
         N = Integer.parseInt(br.readLine());
     }
-
-    static void print() throws Exception {
-
-    }
-
 }
